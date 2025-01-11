@@ -1,0 +1,37 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Portfolio{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'app.css' %}">
+    {% block css_files %}{% endblock %}
+</head>
+<body>
+<header id="main-navigation" style="background: antiquewhite;">
+    <h1><a href="{% url "startingPage" %}">My Portfolio</a></h1>
+    <nav>
+        <a href="{% url "post" %}" style="color: black;">All Posts</a>
+    </nav>
+</header>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+</body>
+</html>
+<div class="loading"></div>
+
+<script>
+    window.addEventListener('scroll', () => {
+        const nav = document.querySelector('#main-navigation');
+        if (window.scrollY > 50) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    });
+</script>
+

@@ -1,11 +1,13 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import os
+import re
 
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory, render_template, redirect, url_for, flash
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.secret_key = os.getenv("FLASK_SECRET", "dev-secret-key")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIST = os.path.join(BASE_DIR, "frontend", "dist")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
@@ -93,7 +95,7 @@ class ContactMessage(db.Model):
     email = db.Column(db.String(120), nullable=False)
     subject = db.Column(db.String(140), nullable=False)
     message = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
     def to_dict(self):
         return {
@@ -102,6 +104,46 @@ class ContactMessage(db.Model):
             "email": self.email,
             "subject": self.subject,
             "message": self.message,
+            "created_at": self.created_at.isoformat(),
+        }
+
+
+class Skill(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False, unique=True)
+    category = db.Column(db.String(80), nullable=False)  # e.g., "Frontend", "Backend", "Database"
+    proficiency = db.Column(db.String(20), nullable=False)  # "Beginner", "Intermediate", "Expert"
+    icon_url = db.Column(db.String(255), nullable=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "category": self.category,
+            "proficiency": self.proficiency,
+            "icon_url": self.icon_url,
+        }
+
+
+class Testimonial(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    author_name = db.Column(db.String(120), nullable=False)
+    author_title = db.Column(db.String(140), nullable=False)
+    author_company = db.Column(db.String(140), nullable=False)
+    author_image = db.Column(db.String(255), nullable=True)
+    content = db.Column(db.Text, nullable=False)
+    rating = db.Column(db.Integer, default=5, nullable=False)  # 1-5 stars
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "author_name": self.author_name,
+            "author_title": self.author_title,
+            "author_company": self.author_company,
+            "author_image": self.author_image,
+            "content": self.content,
+            "rating": self.rating,
             "created_at": self.created_at.isoformat(),
         }
 
@@ -147,6 +189,18 @@ def experiences():
     return jsonify([experience.to_dict() for experience in data])
 
 
+@app.route("/api/skills")
+def skills():
+    data = Skill.query.order_by(Skill.category.asc(), Skill.name.asc()).all()
+    return jsonify([skill.to_dict() for skill in data])
+
+
+@app.route("/api/testimonials")
+def testimonials():
+    data = Testimonial.query.order_by(Testimonial.created_at.desc()).all()
+    return jsonify([testimonial.to_dict() for testimonial in data])
+
+
 @app.route("/api/contact", methods=["POST"])
 def contact():
     payload = request.get_json(silent=True) or {}
@@ -174,6 +228,72 @@ def resume():
         as_attachment=True,
         download_name="Resume.pdf",
     )
+
+
+# ============= Frontend Routes (HTML Pages) =============
+
+@app.route("/home")
+def home():
+    profile = Profile.query.first()
+    projects = Project.query.order_by(Project.id.asc()).limit(3).all()
+    skills = Skill.query.order_by(Skill.category.asc()).all()
+    return render_template("home.html", profile=profile, projects=projects, skills=skills)
+
+
+@app.route("/about")
+def about():
+    profile = Profile.query.first()
+    experiences = Experience.query.order_by(Experience.id.asc()).all()
+    skills = Skill.query.order_by(Skill.category.asc()).all()
+    return render_template("about.html", profile=profile, experiences=experiences, skills=skills)
+
+
+@app.route("/projects")
+def projects_page():
+    projects = Project.query.order_by(Project.id.asc()).all()
+    return render_template("projects.html", projects=projects)
+
+
+@app.route("/project/<int:project_id>")
+def project_detail(project_id):
+    project = Project.query.get_or_404(project_id)
+    return render_template("project_detail.html", project=project)
+
+
+@app.route("/testimonials")
+def testimonials_page():
+    testimonials = Testimonial.query.order_by(Testimonial.created_at.desc()).all()
+    return render_template("testimonials.html", testimonials=testimonials)
+
+
+@app.route("/contact", methods=["GET", "POST"])
+def contact_page():
+    if request.method == "POST":
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        subject = request.form.get("subject", "").strip()
+        message = request.form.get("message", "").strip()
+
+        # Validation
+        if not all([name, email, subject, message]):
+            flash("All fields are required.", "error")
+            return redirect(url_for("contact_page"))
+
+        if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
+            flash("Invalid email address.", "error")
+            return redirect(url_for("contact_page"))
+
+        if len(message) < 10:
+            flash("Message must be at least 10 characters.", "error")
+            return redirect(url_for("contact_page"))
+
+        entry = ContactMessage(name=name, email=email, subject=subject, message=message)
+        db.session.add(entry)
+        db.session.commit()
+        flash("Thank you! Your message has been received. I'll get back to you soon.", "success")
+        return redirect(url_for("contact_page"))
+
+    return render_template("contact.html")
 
 
 def require_admin():
@@ -309,6 +429,84 @@ def admin_experiences_update(experience_id):
     return jsonify(entry.to_dict())
 
 
+# ============= Admin Skills Management =============
+
+@app.route("/api/admin/skills", methods=["POST"])
+def admin_skills_create():
+    auth = require_admin()
+    if auth:
+        return auth
+    payload = request.get_json(silent=True) or {}
+    required_fields = ["name", "category", "proficiency"]
+    missing = [field for field in required_fields if not payload.get(field)]
+    if missing:
+        return jsonify({"error": "Missing fields", "fields": missing}), 400
+
+    entry = Skill(**payload)
+    db.session.add(entry)
+    db.session.commit()
+    return jsonify(entry.to_dict()), 201
+
+
+@app.route("/api/admin/skills/<int:skill_id>", methods=["PUT", "DELETE"])
+def admin_skills_update(skill_id):
+    auth = require_admin()
+    if auth:
+        return auth
+    entry = Skill.query.get_or_404(skill_id)
+
+    if request.method == "DELETE":
+        db.session.delete(entry)
+        db.session.commit()
+        return jsonify({"message": "Deleted"})
+
+    payload = request.get_json(silent=True) or {}
+    for key in ["name", "category", "proficiency", "icon_url"]:
+        if key in payload:
+            setattr(entry, key, payload[key])
+    db.session.commit()
+    return jsonify(entry.to_dict())
+
+
+# ============= Admin Testimonials Management =============
+
+@app.route("/api/admin/testimonials", methods=["POST"])
+def admin_testimonials_create():
+    auth = require_admin()
+    if auth:
+        return auth
+    payload = request.get_json(silent=True) or {}
+    required_fields = ["author_name", "author_title", "author_company", "content"]
+    missing = [field for field in required_fields if not payload.get(field)]
+    if missing:
+        return jsonify({"error": "Missing fields", "fields": missing}), 400
+
+    entry = Testimonial(**payload)
+    db.session.add(entry)
+    db.session.commit()
+    return jsonify(entry.to_dict()), 201
+
+
+@app.route("/api/admin/testimonials/<int:testimonial_id>", methods=["PUT", "DELETE"])
+def admin_testimonials_update(testimonial_id):
+    auth = require_admin()
+    if auth:
+        return auth
+    entry = Testimonial.query.get_or_404(testimonial_id)
+
+    if request.method == "DELETE":
+        db.session.delete(entry)
+        db.session.commit()
+        return jsonify({"message": "Deleted"})
+
+    payload = request.get_json(silent=True) or {}
+    for key in ["author_name", "author_title", "author_company", "author_image", "content", "rating"]:
+        if key in payload:
+            setattr(entry, key, payload[key])
+    db.session.commit()
+    return jsonify(entry.to_dict())
+
+
 def seed_if_empty():
     if Profile.query.first():
         return
@@ -382,6 +580,56 @@ def seed_if_empty():
         ),
     ]
     db.session.add_all(experiences)
+
+    skills = [
+        # Frontend
+        Skill(name="React", category="Frontend", proficiency="Expert"),
+        Skill(name="JavaScript", category="Frontend", proficiency="Expert"),
+        Skill(name="TypeScript", category="Frontend", proficiency="Intermediate"),
+        Skill(name="HTML/CSS", category="Frontend", proficiency="Expert"),
+        Skill(name="Vue.js", category="Frontend", proficiency="Intermediate"),
+        # Backend
+        Skill(name="Python", category="Backend", proficiency="Expert"),
+        Skill(name="Flask", category="Backend", proficiency="Expert"),
+        Skill(name="Django", category="Backend", proficiency="Intermediate"),
+        Skill(name="REST APIs", category="Backend", proficiency="Expert"),
+        Skill(name="Node.js", category="Backend", proficiency="Intermediate"),
+        # Database
+        Skill(name="PostgreSQL", category="Database", proficiency="Expert"),
+        Skill(name="MongoDB", category="Database", proficiency="Intermediate"),
+        Skill(name="Redis", category="Database", proficiency="Intermediate"),
+        # DevOps & Tools
+        Skill(name="Git", category="DevOps", proficiency="Expert"),
+        Skill(name="Docker", category="DevOps", proficiency="Intermediate"),
+        Skill(name="AWS", category="DevOps", proficiency="Intermediate"),
+        Skill(name="CI/CD", category="DevOps", proficiency="Intermediate"),
+    ]
+    db.session.add_all(skills)
+
+    testimonials = [
+        Testimonial(
+            author_name="Sarah Johnson",
+            author_title="Product Manager",
+            author_company="Northwind Labs",
+            content="Zafar is an exceptional developer who consistently delivers high-quality code. His ability to understand requirements and translate them into elegant solutions is outstanding.",
+            rating=5,
+        ),
+        Testimonial(
+            author_name="Ahmed Hassan",
+            author_title="CTO",
+            author_company="Aperture Digital",
+            content="Working with Zafar was a game-changer for our team. His full-stack expertise and attention to detail elevated our entire development process.",
+            rating=5,
+        ),
+        Testimonial(
+            author_name="Lisa Chen",
+            author_title="Senior Designer",
+            author_company="BlueOrbit",
+            content="Zafar's ability to bridge the gap between design and development is remarkable. He truly cares about creating user-centric solutions.",
+            rating=5,
+        ),
+    ]
+    db.session.add_all(testimonials)
     db.session.commit()
 
 

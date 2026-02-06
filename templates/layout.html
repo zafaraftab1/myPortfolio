@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Zafar Aftab - Portfolio{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='portfolio.css') }}">
+    {% block css_files %}{% endblock %}
+</head>
+<body>
+    <header id="main-navigation">
+        <h1><a href="{{ url_for('home') }}">Zafar Aftab</a></h1>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('projects_page') }}">Projects</a>
+            <a href="{{ url_for('testimonials_page') }}">Testimonials</a>
+            <a href="{{ url_for('contact_page') }}">Contact</a>
+            <a href="{{ url_for('resume') }}" class="btn-resume">Resume</a>
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                {% for category, msg in messages %}
+                    <div class="flash flash-{{ category }}">
+                        {{ msg }}
+                        <button class="close-flash">&times;</button>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer id="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2026 Zafar Aftab. All rights reserved.</p>
+            <div class="social-links">
+                {% if profile %}
+                    {% if profile.github %}
+                        <a href="{{ profile.github }}" target="_blank" title="GitHub">GitHub</a>
+                    {% endif %}
+                    {% if profile.linkedin %}
+                        <a href="{{ profile.linkedin }}" target="_blank" title="LinkedIn">LinkedIn</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('#main-navigation');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Close flash messages
+        document.querySelectorAll('.close-flash').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.parentElement.remove();
+            });
+        });
+    </script>
+</body>
+</html>
+

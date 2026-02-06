@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}Projects - Portfolio{% endblock %}
+
+{% block content %}
+    <section class="projects-page-section">
+        <div class="page-header">
+            <h2>My Projects</h2>
+            <p>A collection of projects showcasing my skills in full-stack development</p>
+        </div>
+
+        {% if projects %}
+            <div class="projects-grid-full">
+                {% for project in projects %}
+                    <div class="project-card-full">
+                        {% if project.image_url %}
+                            <img src="{{ project.image_url }}" alt="{{ project.title }}" class="project-image-full">
+                        {% else %}
+                            <div class="project-image-placeholder-full">
+                                <span>{{ project.title }}</span>
+                            </div>
+                        {% endif %}
+                        <div class="project-info-full">
+                            <h3>{{ project.title }}</h3>
+                            <p class="project-description">{{ project.description }}</p>
+
+                            <div class="tech-stack-full">
+                                <strong>Tech Stack:</strong>
+                                {% for tech in project.tech_stack.split(', ') %}
+                                    <span class="tech-badge-full">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+
+                            <div class="project-actions">
+                                {% if project.live_url %}
+                                    <a href="{{ project.live_url }}" target="_blank" class="project-link">
+                                        🔗 Live Project
+                                    </a>
+                                {% endif %}
+                                {% if project.repo_url %}
+                                    <a href="{{ project.repo_url }}" target="_blank" class="project-link">
+                                        💻 View Code
+                                    </a>
+                                {% endif %}
+                                <a href="{{ url_for('project_detail', project_id=project.id) }}" class="project-link">
+                                    📄 Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>No projects to display yet.</p>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}
+

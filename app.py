@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
 import os
 import re
+import logging
+from logging.handlers import RotatingFileHandler
 
 from flask import Flask, jsonify, request, send_from_directory, render_template, redirect, url_for, flash
 from flask_cors import CORS
@@ -10,15 +12,27 @@ app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET", "dev-secret-key")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIST = os.path.join(BASE_DIR, "frontend", "dist")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
-    "DATABASE_URL",
-    "postgresql://postgres:postgres@localhost:5432/portfolio",
-)
+
+# Use sqlite by default (the repo contains db.sqlite3) unless DATABASE_URL is provided
+default_sqlite = f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", default_sqlite)
 if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
     app.config["SQLALCHEMY_DATABASE_URI"] = app.config[
         "SQLALCHEMY_DATABASE_URI"
     ].replace("postgres://", "postgresql://", 1)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Setup logging to file so errors are easy to inspect
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+file_handler = RotatingFileHandler(os.path.join(LOG_DIR, "app.log"), maxBytes=1024 * 1024, backupCount=5)
+file_handler.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]")
+file_handler.setFormatter(formatter)
+
+# Attach handler to Flask logger
+app.logger.addHandler(file_handler)
+app.logger.setLevel(logging.INFO)
 
 CORS(app)
 db = SQLAlchemy(app)
@@ -637,9 +651,24 @@ with app.app_context():
     db.create_all()
     seed_if_empty()
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    try:
+        return render_template("404.html"), 404
+    except Exception:
+        return "Page not found", 404
+
+
+@app.errorhandler(500)
+def internal_error(e):
+    app.logger.exception("Server Error: %s", e)
+    try:
+        return render_template("500.html"), 500
+    except Exception:
+        return "Internal server error", 500
+
+
 if __name__ == '__main__':
     app.run()
 
-
-# for i in range(1, 20)
-# print(i);

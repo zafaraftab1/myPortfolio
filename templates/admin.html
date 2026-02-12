@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Portfolio</title>
+  <style>
+    body{font-family:system-ui, -apple-system, Roboto, Arial;margin:2rem}
+    form{max-width:720px}
+    label{display:block;margin-top:1rem}
+    input,textarea{width:100%;padding:.5rem}
+    button{margin-top:1rem;padding:.5rem 1rem}
+    .hint{color:#666;font-size:.9rem}
+  </style>
+</head>
+<body>
+  <h1>Admin</h1>
+  <p class="hint">Use the <code>X-Admin-Token</code> header to authenticate (set ADMIN_TOKEN in env).</p>
+
+  <section>
+    <h2>Create Project</h2>
+    <form id="project-form">
+      <label>Title<input name="title" required></label>
+      <label>Description<textarea name="description" rows="4" required></textarea></label>
+      <label>Tech Stack<input name="tech_stack" required></label>
+      <label>Repo URL<input name="repo_url"></label>
+      <label>Live URL<input name="live_url"></label>
+      <label>Image URL<input name="image_url"></label>
+      <button type="submit">Create</button>
+    </form>
+    <pre id="result"></pre>
+  </section>
+
+  <script>
+    const form = document.getElementById('project-form')
+    form.addEventListener('submit', async (ev)=>{
+      ev.preventDefault()
+      const data = new FormData(form)
+      const body = Object.fromEntries(data.entries())
+      try{
+        const token = prompt('X-Admin-Token (leave empty to cancel)')
+        if(!token) return
+        const res = await fetch('/api/admin/projects',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','X-Admin-Token': token},
+          body: JSON.stringify(body)
+        })
+        const json = await res.json()
+        document.getElementById('result').textContent = JSON.stringify({status:res.status, body: json}, null, 2)
+      }catch(err){
+        document.getElementById('result').textContent = String(err)
+      }
+    })
+  </script>
+</body>
+</html>
+

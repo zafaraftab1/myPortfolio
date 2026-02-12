@@ -7,6 +7,7 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask, jsonify, request, send_from_directory, render_template, redirect, url_for, flash
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET", "dev-secret-key")
@@ -36,6 +37,7 @@ app.logger.setLevel(logging.INFO)
 
 CORS(app)
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "changeme")
 
 
@@ -525,17 +527,18 @@ def seed_if_empty():
     if Profile.query.first():
         return
     profile = Profile(
-        name="Zafar Aftab",
-        title="Full-Stack Developer",
+        name="Md Aftab Alam",
+        title="Python Developer & GenAI Expert",
         summary=(
-            "I build performant web apps with React, Flask, and PostgreSQL, "
-            "focusing on clean UX and reliable backends."
+            "Experienced Python developer with deep expertise in Generative AI, building scalable applications "
+            "with FastAPI, Flask, and AWS. Proficient in database design with PostgreSQL, MySQL, and MongoDB. "
+            "I create intelligent solutions leveraging LLMs, RAG, and modern cloud technologies to solve complex problems."
         ),
-        location="Lahore, Pakistan",
-        email="you@example.com",
-        phone="+92 300 000 0000",
-        linkedin="https://linkedin.com/in/your-handle",
-        github="https://github.com/your-handle",
+        location="India",
+        email="aftab@example.com",
+        phone="+91 XXXXXXXXXX",
+        linkedin="https://linkedin.com/in/md-aftab-alam",
+        github="https://github.com/aftab-alam",
     )
     db.session.add(profile)
 
@@ -667,6 +670,12 @@ def internal_error(e):
         return render_template("500.html"), 500
     except Exception:
         return "Internal server error", 500
+
+
+@app.route('/admin')
+def admin_ui():
+    # Simple admin UI that uses X-Admin-Token header; it will POST to /api/admin/projects
+    return render_template('admin.html')
 
 
 if __name__ == '__main__':

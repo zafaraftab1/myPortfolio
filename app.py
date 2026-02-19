@@ -535,8 +535,8 @@ def seed_if_empty():
             "I create intelligent solutions leveraging LLMs, RAG, and modern cloud technologies to solve complex problems."
         ),
         location="India",
-        email="aftab@example.com",
-        phone="+91 XXXXXXXXXX",
+        email="aftab.work86@gmail.com",
+        phone="+91 8176401886",
         linkedin="https://linkedin.com/in/md-aftab-alam",
         github="https://github.com/aftab-alam",
     )

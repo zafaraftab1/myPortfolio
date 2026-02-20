@@ -17,6 +17,6 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
-#logic code
+#scripts code
 if __name__ == '__main__':
     main()

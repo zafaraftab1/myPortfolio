@@ -71,7 +71,7 @@ def check_files():
     return all_exist
 
 def check_templates():
-    """Check if templates have required content"""
+    """Check if templates have required content (e.g. navigation, sections)"""
     print("\nChecking templates content...")
     templates = {
         'templates/layout.html': ['main-navigation', 'main-footer'],
@@ -99,7 +99,7 @@ def check_templates():
     return all_good
 
 def check_database():
-    """Check database configuration"""
+    """Check database configuration and connectivity"""
     print("\nChecking database configuration...")
     try:
         from app import app, db
@@ -112,7 +112,7 @@ def check_database():
         return False
 
 def check_models():
-    """Check if all database models are defined"""
+    """Check if all database models are defined and correctly imported"""
     print("\nChecking database models...")
     try:
         from app import Profile, Project, Experience, Skill, Testimonial, ContactMessage

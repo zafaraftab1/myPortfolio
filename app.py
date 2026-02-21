@@ -177,7 +177,7 @@ def serve_frontend_assets(filename):
         return "Frontend not built yet.", 404
     if os.path.exists(os.path.join(FRONTEND_DIST, filename)):
         return send_from_directory(FRONTEND_DIST, filename)
-    return send_from_directory(FRONTEND_DIST, "index.html")
+    return render_template("404.html"), 404
 
 
 @app.route("/api/health")
@@ -680,4 +680,3 @@ def admin_ui():
 
 if __name__ == '__main__':
     app.run()
-

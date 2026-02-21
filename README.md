@@ -46,7 +46,7 @@
 - Professional multi-page portfolio UI (`/home`, `/about`, `/projects`, `/testimonials`, `/contact`)
 - REST API + Admin API with token-based protection (`X-Admin-Token`)
 - SQLAlchemy models for profile, projects, experience, skills, testimonials, and contact messages
-- Hybrid architecture: Flask-rendered templates + React/Vite frontend support in `frontend/`
+- Single entry portfolio flow (`/` redirects to `/home`) with Flask-rendered templates
 - Ready for local dev, migration workflows, and Docker-based deployment
 
 ---
@@ -66,13 +66,31 @@
 ## 🗺️ Architecture
 
 ```mermaid
-flowchart LR
-    U[User Browser] --> F[Flask App]
-    F --> T[Jinja Templates]
-    F --> A[REST API Endpoints]
-    A --> DB[(SQLite / PostgreSQL)]
-    F --> R[React/Vite Dist]
-    Admin[Admin Client + X-Admin-Token] --> A
+flowchart TD
+    U[Browser] -->|GET / -> redirect| P[/home]
+    P --> F[Flask App]
+    F --> J[Jinja Templates]
+    F --> S[Static Assets CSS/JS]
+    F --> API[Public API /api/*]
+    API --> DB[(SQLite / PostgreSQL)]
+    A[Admin Client] -->|X-Admin-Token| ADM[Admin API /api/admin/*]
+    ADM --> DB
+```
+
+### Request Flow
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant F as Flask
+    participant D as Database
+
+    B->>F: GET /
+    F-->>B: 302 Redirect to /home
+    B->>F: GET /home
+    F->>D: Load profile/projects/skills
+    D-->>F: Records
+    F-->>B: Rendered HTML (Jinja)
 ```
 
 ---
@@ -137,13 +155,13 @@ npm run dev
 
 ### Pages
 
+- `GET /` (redirects to `/home`)
 - `GET /home`
 - `GET /about`
 - `GET /projects`
 - `GET /project/<id>`
 - `GET /testimonials`
 - `GET /contact`
-- `GET /resume`
 
 ### Public API
 

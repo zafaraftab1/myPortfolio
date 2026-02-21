@@ -12,7 +12,6 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET", "dev-secret-key")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FRONTEND_DIST = os.path.join(BASE_DIR, "frontend", "dist")
 
 # Use sqlite by default (the repo contains db.sqlite3) unless DATABASE_URL is provided
 default_sqlite = f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}"
@@ -166,18 +165,7 @@ class Testimonial(db.Model):
 
 @app.route('/')
 def hello_world():
-    if os.path.exists(os.path.join(FRONTEND_DIST, "index.html")):
-        return send_from_directory(FRONTEND_DIST, "index.html")
-    return "Portfolio API is running. Build the frontend to serve the UI."
-
-
-@app.route("/<path:filename>")
-def serve_frontend_assets(filename):
-    if not os.path.exists(os.path.join(FRONTEND_DIST, "index.html")):
-        return "Frontend not built yet.", 404
-    if os.path.exists(os.path.join(FRONTEND_DIST, filename)):
-        return send_from_directory(FRONTEND_DIST, filename)
-    return render_template("404.html"), 404
+    return redirect(url_for("home"))
 
 
 @app.route("/api/health")

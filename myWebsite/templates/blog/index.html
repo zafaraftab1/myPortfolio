@@ -1,39 +1,215 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}
-My Blog
-{% endblock %}
+
+{% block title %}Zafar Aftab — Full-Stack Developer{% endblock %}
 
 {% block css_files %}
-    <link rel="stylesheet" href="{% static 'blog/post.css' %}"/>
     <link rel="stylesheet" href="{% static 'blog/index.css' %}"/>
 {% endblock %}
 
 {% block content %}
-<section id="welcome">
-    <header>
-        <img src="{% static "blog/images/IMG_6535.jpeg" %}" alt="Max - The Author of This Blog" />
-        <h2>Zafar Aftab's Portfolio</h2>
-    </header>
-    <p>Hi, I am Aftab, and I love to do code!</p>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+    <div class="hero-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="hero-container">
+        <!-- Left: Text Content -->
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Available for new opportunities
+            </div>
+
+            <h1 class="hero-title">
+                Hi, I'm <br>
+                <span class="gradient-text">Zafar Aftab</span>
+            </h1>
+
+            <h2 class="hero-subtitle">
+                <span id="typing-text"></span><span class="typing-cursor">|</span>
+            </h2>
+
+            <p class="hero-description">
+                I build beautiful, scalable web applications using Python & Django.
+                Passionate about clean architecture and great user experiences.
+            </p>
+
+            <div class="hero-actions">
+                <a href="{% url 'post' %}" class="btn-primary">Explore Blog</a>
+                <a href="{% static 'resume.pdf' %}" class="btn-secondary" target="_blank" rel="noopener noreferrer">
+                    Download CV ↗
+                </a>
+            </div>
+        </div>
+
+        <!-- Right: Avatar + Stats -->
+        <div class="hero-visual">
+            <div class="avatar-ring">
+                <div class="avatar-glow"></div>
+                <img src="{% static 'blog/images/IMG_6535.jpeg' %}" alt="Zafar Aftab" class="hero-avatar"/>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-pill">
+                    <span class="stat-num">3+</span>
+                    <span class="stat-lbl">Years Coding</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-num">10+</span>
+                    <span class="stat-lbl">Projects</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-num">∞</span>
+                    <span class="stat-lbl">Curiosity</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-hint">
+        <div class="scroll-mouse">
+            <div class="scroll-wheel"></div>
+        </div>
+        <span>Scroll</span>
+    </div>
 </section>
 
-<section id="latest-post">
-    <h2>My Latest Thoughts</h2>
-    <ul>
-{% for post in posts %}
-            {% include "blog/includes/post.html" %}
-{% endfor %}
-        
-    </ul>
+<!-- ===== TECH STACK ===== -->
+<section id="tech-stack" class="reveal">
+    <div class="section-wrap">
+        <p class="section-eyebrow">My Toolkit</p>
+        <div class="tech-scroll-track">
+            <div class="tech-item"><span class="t-icon">🐍</span><span>Python</span></div>
+            <div class="tech-item"><span class="t-icon">🌐</span><span>Django</span></div>
+            <div class="tech-item"><span class="t-icon">☁️</span><span>AWS</span></div>
+            <div class="tech-item"><span class="t-icon">🎨</span><span>HTML & CSS</span></div>
+            <div class="tech-item"><span class="t-icon">🗄️</span><span>SQL</span></div>
+            <div class="tech-item"><span class="t-icon">🔧</span><span>Git</span></div>
+            <div class="tech-item"><span class="t-icon">⚙️</span><span>REST APIs</span></div>
+            <div class="tech-item"><span class="t-icon">🐳</span><span>Docker</span></div>
+        </div>
+    </div>
 </section>
 
-<section id="about">
-    <h2>What I Do</h2>
-    <p>I love programming and learning new things.</p>
+<!-- ===== LATEST POSTS ===== -->
+<section id="latest-posts" class="reveal">
+    <div class="section-wrap">
+        <div class="section-header">
+            <p class="section-eyebrow">Writing</p>
+            <h2 class="section-title">My Latest Thoughts</h2>
+            <p class="section-sub">Exploring technology, development, and what I'm learning.</p>
+        </div>
+
+        <div class="posts-grid">
+            {% for post in posts %}
+            <article class="post-card glass-card">
+                <a href="{% url 'postDetails' post.slug %}" class="post-card-link">
+                    <div class="post-card-img-wrap">
+                        <img src="{% static 'blog/images/' %}{{ post.image }}" alt="{{ post.title }}" class="post-card-img"/>
+                        <div class="post-card-overlay"></div>
+                        <span class="post-card-tag">Article</span>
+                    </div>
+                    <div class="post-card-body">
+                        <time class="post-card-date">{{ post.date|date:"d M Y" }}</time>
+                        <h3 class="post-card-title">{{ post.title }}</h3>
+                        <p class="post-card-excerpt">{{ post.excerpt }}</p>
+                        <span class="post-card-cta">Read more →</span>
+                    </div>
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+
+        <div class="section-footer-cta">
+            <a href="{% url 'post' %}" class="btn-outline">View All Posts →</a>
+        </div>
+    </div>
 </section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about" class="reveal">
+    <div class="section-wrap">
+        <div class="about-grid">
+            <div class="about-text">
+                <p class="section-eyebrow">About Me</p>
+                <h2 class="section-title">
+                    Passionate About<br>
+                    <span class="gradient-text">Code & Craft</span>
+                </h2>
+                <p class="about-para">
+                    I'm Zafar Aftab, a backend developer with a love for building clean,
+                    efficient web applications. I specialize in Python and Django, and enjoy
+                    turning complex problems into simple, beautiful solutions.
+                </p>
+                <p class="about-para">
+                    When I'm not writing code, I'm exploring new technologies, writing
+                    about what I learn, and contributing to the developer community.
+                </p>
+                <div class="about-actions">
+                    <a href="{% url 'post' %}" class="btn-primary">Read My Blog</a>
+                    <a href="{% static 'resume.pdf' %}" class="btn-ghost" target="_blank">Download CV</a>
+                </div>
+            </div>
+
+            <div class="about-cards">
+                <div class="highlight-card glass-card">
+                    <span class="h-icon">🎯</span>
+                    <h3>Problem Solver</h3>
+                    <p>I love tackling hard problems with elegant, minimal solutions.</p>
+                </div>
+                <div class="highlight-card glass-card">
+                    <span class="h-icon">📚</span>
+                    <h3>Continuous Learner</h3>
+                    <p>Always exploring new tools, frameworks and best practices.</p>
+                </div>
+                <div class="highlight-card glass-card">
+                    <span class="h-icon">🚀</span>
+                    <h3>Fast Builder</h3>
+                    <p>From idea to deployed app — fast, clean, and scalable code.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== TYPING ANIMATION SCRIPT ===== -->
+<script>
+    const words = ['Full-Stack Developer.', 'Django Expert.', 'Python Enthusiast.', 'Cloud Builder.'];
+    let wordIdx = 0;
+    let charIdx = 0;
+    let deleting = false;
+    const el = document.getElementById('typing-text');
+
+    function type() {
+        const word = words[wordIdx];
+        if (deleting) {
+            el.textContent = word.slice(0, charIdx - 1);
+            charIdx--;
+        } else {
+            el.textContent = word.slice(0, charIdx + 1);
+            charIdx++;
+        }
+
+        if (!deleting && charIdx === word.length) {
+            deleting = true;
+            setTimeout(type, 1800);
+            return;
+        }
+        if (deleting && charIdx === 0) {
+            deleting = false;
+            wordIdx = (wordIdx + 1) % words.length;
+        }
+
+        setTimeout(type, deleting ? 45 : 95);
+    }
+
+    type();
+</script>
+
 {% endblock %}
-
-
-
-

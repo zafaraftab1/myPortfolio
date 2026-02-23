@@ -1,28 +1,60 @@
 {% extends "base.html" %}
-
 {% load static %}
-{% block title %}
-All My Posts
-{% endblock %}
+
+{% block title %}Blog — All Posts{% endblock %}
 
 {% block css_files %}
-    <link rel="stylesheet" href="{% static 'blog/post.css' %}"/>
     <link rel="stylesheet" href="{% static 'blog/allPost.css' %}"/>
 {% endblock %}
 
 {% block content %}
-<section id="posts">
-    <h2>My Collected Posts</h2>
 
-    <div class="post-categories">
-        <span class="category-tag">Category</span>
+<!-- Page Header -->
+<section id="posts-hero">
+    <div class="posts-hero-container">
+        <p class="section-eyebrow">Writing</p>
+        <h1 class="posts-hero-title">
+            All <span class="gradient-text">Articles</span>
+        </h1>
+        <p class="posts-hero-sub">
+            Thoughts on Python, Django, Cloud and modern web development.
+        </p>
     </div>
-
-
-    <ul>
-        {% for post in all_posts %}
-            {% include "blog/includes/post.html" %}
-        {% endfor %}
-    </ul>
+    <div class="posts-hero-orb"></div>
 </section>
+
+<!-- Posts Grid -->
+<section id="posts">
+    <div class="posts-container">
+        <div class="all-posts-grid">
+            {% for post in all_posts %}
+            <article class="apost-card glass-card">
+                <a href="{% url 'postDetails' post.slug %}" class="apost-link">
+                    <div class="apost-img-wrap">
+                        <img src="{% static 'blog/images/' %}{{ post.image }}" alt="{{ post.title }}" class="apost-img"/>
+                        <div class="apost-overlay"></div>
+                        <span class="apost-badge">Article</span>
+                    </div>
+                    <div class="apost-body">
+                        <div class="apost-meta">
+                            <span class="apost-author">{{ post.author }}</span>
+                            <time class="apost-date">{{ post.date|date:"d M Y" }}</time>
+                        </div>
+                        <h2 class="apost-title">{{ post.title }}</h2>
+                        <p class="apost-excerpt">{{ post.excerpt }}</p>
+                        <div class="apost-footer">
+                            <span class="apost-cta">Read Article →</span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+            {% empty %}
+            <div class="no-posts">
+                <p>No posts yet. Check back soon!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
 {% endblock %}

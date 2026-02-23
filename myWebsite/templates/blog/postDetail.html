@@ -1,29 +1,62 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}
-    {{ post.title }}
-{% endblock %}
+
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block css_files %}
-    <link rel="stylesheet" href="{% static 'blog/post.css' %}" />
+    <link rel="stylesheet" href="{% static 'blog/post.css' %}"/>
 {% endblock %}
 
 {% block content %}
-<section id="summary">
-    <h2>{{ post.title }}</h2>
-    <article>
-        <!-- Use dot notation for dictionary-like access -->
-        <img src="{% static 'blog/images/' %}{{ post.image }}" alt="{{ post.title }}">
 
-        <address>By {{ post.author }}</address>
-        <div>
-            Last updated on <time>{{ post.date|date:"d M Y" }}</time>
+<!-- ===== ARTICLE HERO ===== -->
+<div id="article-hero">
+    <div class="article-hero-bg">
+        <img src="{% static 'blog/images/' %}{{ post.image }}" alt="{{ post.title }}" class="article-hero-img"/>
+        <div class="article-hero-overlay"></div>
+    </div>
+    <div class="article-hero-content">
+        <a href="{% url 'post' %}" class="back-link">← All Articles</a>
+        <div class="article-badge">Article</div>
+        <h1 class="article-title">{{ post.title }}</h1>
+        <div class="article-meta">
+            <span class="article-author">By {{ post.author }}</span>
+            <span class="meta-sep">·</span>
+            <time class="article-date">{{ post.date|date:"d M Y" }}</time>
         </div>
-        <section>
-            <main>
-               {{ post.content|linebreaks }}
-            </main>
-        </section>
-    </article>
-</section>
+    </div>
+</div>
+
+<!-- ===== ARTICLE BODY ===== -->
+<div id="article-body">
+    <div class="article-container">
+
+        <!-- Back navigation (mobile-friendly) -->
+        <a href="{% url 'post' %}" class="back-btn-inline">
+            ← Back to all articles
+        </a>
+
+        <!-- Article content -->
+        <article class="article-content">
+            {{ post.content|linebreaks }}
+        </article>
+
+        <!-- Footer -->
+        <div class="article-footer">
+            <div class="article-author-card">
+                <div class="author-avatar">ZA</div>
+                <div class="author-info">
+                    <span class="author-name">{{ post.author }}</span>
+                    <span class="author-role">Full-Stack Developer · Django Expert</span>
+                </div>
+            </div>
+
+            <div class="article-nav">
+                <a href="{% url 'post' %}" class="btn-outline-sm">← Browse More Articles</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 {% endblock %}

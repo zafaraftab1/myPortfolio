@@ -1464,4 +1464,98 @@ main {
     .timeline-wrap::before { left: 1.25rem; }
     .timeline-item { padding-left: 2.75rem; }
     .timeline-dot { left: calc(1.25rem - 7px); }
+
+    .cta-card { padding: 2.5rem 1.5rem; }
+
+    .contact-form-card { padding: 1.75rem 1.25rem; }
+    .contact-form-card h2 { font-size: 1.35rem; }
+
+    .about-card { padding: 1.75rem 1.25rem; }
+
+    .hero-title { font-size: clamp(2.2rem, 8vw, 3.5rem); }
+    .stat-pill { padding: 0.7rem 1rem; }
+    .stat-num  { font-size: 1.3rem; }
+}
+
+/* ===================================================
+   ADDITIONAL UTILITIES
+   =================================================== */
+
+/* Full-width button modifier */
+.btn-full {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Section divider */
+.section-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 0 2rem;
+}
+
+/* Hover lift for any element */
+.hover-lift {
+    transition: var(--transition);
+}
+.hover-lift:hover { transform: translateY(-4px); }
+
+/* Code-style inline badge */
+.code-badge {
+    font-family: 'Courier New', monospace;
+    background: rgba(124, 58, 237, 0.1);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    border-radius: 4px;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.82rem;
+    color: #a78bfa;
+}
+
+/* ===================================================
+   ENHANCED FOOTER
+   =================================================== */
+
+#main-footer {
+    background: linear-gradient(to bottom, var(--bg-secondary), #040a14);
+}
+
+.footer-social {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.footer-social-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-social-btn:hover {
+    background: rgba(124, 58, 237, 0.15);
+    border-color: rgba(124, 58, 237, 0.4);
+    color: #a78bfa;
+    transform: translateY(-3px);
+}
+
+/* ===================================================
+   PAGE TRANSITION FADE-IN
+   =================================================== */
+
+main {
+    animation: pageFadeIn 0.4s ease both;
+}
+
+@keyframes pageFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
 }

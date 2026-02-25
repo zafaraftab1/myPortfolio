@@ -1,57 +1,51 @@
 {% extends "layout.html" %}
 
-{% block title %}{{ project.title }} - Portfolio{% endblock %}
+{% block title %}{{ project.title }}{% endblock %}
 
 {% block content %}
-    <section class="project-detail-section">
-        <a href="{{ url_for('projects_page') }}" class="back-link">← Back to Projects</a>
 
-        <div class="project-detail-hero">
-            {% if project.image_url %}
-                <img src="{{ project.image_url }}" alt="{{ project.title }}" class="detail-image">
-            {% else %}
-                <div class="detail-image-placeholder">
-                    <span>{{ project.title }}</span>
-                </div>
-            {% endif %}
-        </div>
+<section id="project-detail">
+    <a href="{{ url_for('projects_page') }}" class="back-btn">&larr; Back to Projects</a>
 
-        <div class="project-detail-content">
-            <h2>{{ project.title }}</h2>
-            <p class="detail-description">{{ project.description }}</p>
+    <div class="proj-detail-hero">
+        {% if project.image_url %}
+            <img src="{{ project.image_url }}" alt="{{ project.title }}">
+        {% else %}
+            <div class="proj-detail-hero-placeholder">{{ project.title }}</div>
+        {% endif %}
+    </div>
 
-            <div class="detail-meta">
-                <div class="meta-item">
-                    <h4>Technology Stack</h4>
-                    <div class="tech-stack-detail">
-                        {% for tech in project.tech_stack.split(', ') %}
-                            <span class="tech-badge-detail">{{ tech }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
+    <div class="proj-detail-content glass-card reveal">
+        <h1 class="proj-detail-title gradient-text">{{ project.title }}</h1>
+        <p class="proj-detail-desc">{{ project.description }}</p>
 
-                <div class="meta-item">
-                    <h4>Links</h4>
-                    <div class="detail-links">
-                        {% if project.live_url %}
-                            <a href="{{ project.live_url }}" target="_blank" class="detail-link">
-                                🌐 Live Project
-                            </a>
-                        {% endif %}
-                        {% if project.repo_url %}
-                            <a href="{{ project.repo_url }}" target="_blank" class="detail-link">
-                                💻 View Repository
-                            </a>
-                        {% endif %}
-                    </div>
+        <div class="proj-detail-meta">
+            <div>
+                <span class="meta-label">Technology Stack</span>
+                <div class="proj-detail-stack">
+                    {% for tech in project.tech_stack.split(', ') %}
+                        <span class="proj-detail-badge">{{ tech }}</span>
+                    {% endfor %}
                 </div>
             </div>
-
-            <div class="detail-cta">
-                <p>Interested in similar work? Let's collaborate!</p>
-                <a href="{{ url_for('contact_page') }}" class="btn btn-primary">Get In Touch</a>
+            <div>
+                <span class="meta-label">Project Links</span>
+                <div class="proj-detail-links">
+                    {% if project.live_url %}
+                        <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn-primary">Live Project ↗</a>
+                    {% endif %}
+                    {% if project.repo_url %}
+                        <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn-secondary">View Code</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </section>
+
+        <div class="proj-detail-cta">
+            <p>Like what you see? Let's build something together.</p>
+            <a href="{{ url_for('contact_page') }}" class="btn-primary">Get In Touch &rarr;</a>
+        </div>
+    </div>
+</section>
+
 {% endblock %}
-

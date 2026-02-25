@@ -1,100 +1,190 @@
 {% extends "layout.html" %}
 
-{% block title %}Home - {{ profile.name if profile else 'Portfolio' }}{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="hero-content">
-            {% if profile %}
-                <h2>Hi, I'm {{ profile.name }}</h2>
-                <p class="hero-title">{{ profile.title }}</p>
-                <p class="hero-description">{{ profile.summary }}</p>
-                <div class="hero-buttons">
-                    <a href="{{ url_for('contact_page') }}" class="btn btn-primary">Get In Touch</a>
-                    <a href="{{ url_for('about') }}" class="btn btn-secondary">Learn More</a>
-                </div>
-                <div class="hero-contact-info">
-                    <p>📍 {{ profile.location }}</p>
-                    <p>📧 <a href="mailto:{{ profile.email }}">{{ profile.email }}</a></p>
-                </div>
-            {% else %}
-                <h2>Welcome to My Portfolio</h2>
-                <p>Professional portfolio showcasing projects and experience.</p>
-            {% endif %}
-        </div>
-    </section>
 
-    <!-- Featured Projects -->
-    {% if projects %}
-        <section class="featured-projects">
-            <h3>Featured Projects</h3>
-            <div class="projects-grid">
-                {% for project in projects %}
-                    <div class="project-card">
+<!-- ===== HERO ===== -->
+<section id="hero">
+    <div class="hero-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="hero-container">
+        <div class="hero-text">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Available for work
+            </div>
+
+            <h1 class="hero-title">
+                Hi, I'm<br>
+                <span class="gradient-text">{{ profile.name if profile else 'Zafar Aftab' }}</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                <span id="typing-text"></span><span class="typing-cursor">|</span>
+            </p>
+
+            <p class="hero-description">
+                {{ profile.summary if profile else 'Crafting elegant solutions to complex problems with clean code and creative thinking.' }}
+            </p>
+
+            <div class="hero-actions">
+                <a href="{{ url_for('contact_page') }}" class="btn-primary">Get In Touch &rarr;</a>
+                <a href="{{ url_for('projects_page') }}" class="btn-secondary">View Projects</a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="avatar-ring">
+                <div class="avatar-glow"></div>
+                <div class="avatar-initials">
+                    {{ profile.name[:2].upper() if profile else 'ZA' }}
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-pill">
+                    <span class="stat-num">3+</span>
+                    <span class="stat-lbl">Years Exp.</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-num">{{ projects | length if projects else '10' }}+</span>
+                    <span class="stat-lbl">Projects</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-num">100%</span>
+                    <span class="stat-lbl">Committed</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-hint">
+        <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+        <span>Scroll</span>
+    </div>
+</section>
+
+<!-- ===== TECH STRIP ===== -->
+<section id="tech-strip">
+    <div class="section-wrap">
+        <div class="tech-scroll-track">
+            <div class="tech-item">🐍 Python</div>
+            <div class="tech-item">⚗️ Flask</div>
+            <div class="tech-item">🌐 JavaScript</div>
+            <div class="tech-item">⚛️ React</div>
+            <div class="tech-item">🐘 PostgreSQL</div>
+            <div class="tech-item">🐳 Docker</div>
+            <div class="tech-item">☁️ AWS</div>
+            <div class="tech-item">🐙 Git &amp; GitHub</div>
+            <div class="tech-item">🎨 CSS / Tailwind</div>
+            <div class="tech-item">🔧 REST APIs</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FEATURED PROJECTS ===== -->
+{% if projects %}
+<section id="featured-projects">
+    <div class="section-wrap">
+        <div class="section-header reveal">
+            <span class="section-eyebrow">Portfolio</span>
+            <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
+            <p class="section-sub">A selection of my recent work — from web apps to APIs and beyond.</p>
+        </div>
+
+        <div class="projects-grid">
+            {% for project in projects[:3] %}
+                <article class="proj-card glass-card reveal">
+                    <div class="proj-card-img-wrap">
                         {% if project.image_url %}
-                            <img src="{{ project.image_url }}" alt="{{ project.title }}" class="project-image">
+                            <img src="{{ project.image_url }}" alt="{{ project.title }}" class="proj-card-img">
                         {% else %}
-                            <div class="project-image-placeholder">
-                                <span>{{ project.title }}</span>
+                            <div class="proj-card-placeholder">
+                                <span class="proj-placeholder-icon">🛠️</span>
                             </div>
                         {% endif %}
-                        <div class="project-info">
-                            <h4>{{ project.title }}</h4>
-                            <p>{{ project.description }}</p>
-                            <div class="tech-stack">
-                                {% for tech in project.tech_stack.split(', ') %}
-                                    <span class="tech-badge">{{ tech }}</span>
-                                {% endfor %}
-                            </div>
-                            <div class="project-links">
-                                {% if project.live_url %}
-                                    <a href="{{ project.live_url }}" target="_blank" class="link-btn">Live</a>
-                                {% endif %}
-                                {% if project.repo_url %}
-                                    <a href="{{ project.repo_url }}" target="_blank" class="link-btn">Repository</a>
-                                {% endif %}
-                                <a href="{{ url_for('project_detail', project_id=project.id) }}" class="link-btn">Details</a>
-                            </div>
-                        </div>
+                        <div class="proj-card-overlay"></div>
                     </div>
-                {% endfor %}
-            </div>
-            <div class="view-more">
-                <a href="{{ url_for('projects_page') }}" class="btn btn-secondary">View All Projects</a>
-            </div>
-        </section>
-    {% endif %}
-
-    <!-- Skills Section -->
-    {% if skills_by_category %}
-        <section class="skills-section">
-            <h3>Skills</h3>
-            <div class="skills-container">
-                {% for category, category_skills in skills_by_category.items() %}
-                    <div class="skill-category">
-                        <h4>{{ category }}</h4>
-                        <div class="skills-list">
-                            {% for skill in category_skills %}
-                                <div class="skill-item">
-                                    <div class="skill-name">{{ skill.name }}</div>
-                                    <div class="skill-bar">
-                                        <div class="skill-bar-fill" style="width: {% if skill.proficiency == 'Expert' %}95{% elif skill.proficiency == 'Intermediate' %}70{% else %}40{% endif %}%"></div>
-                                    </div>
-                                    <div class="skill-level">{{ skill.proficiency }}</div>
-                                </div>
+                    <div class="proj-card-body">
+                        <div class="proj-tech-list">
+                            {% for tech in project.tech_stack.split(', ')[:3] %}
+                                <span class="proj-tech-badge">{{ tech }}</span>
                             {% endfor %}
                         </div>
+                        <h3 class="proj-card-title">{{ project.title }}</h3>
+                        <p class="proj-card-desc">{{ project.description }}</p>
+                        <div class="proj-card-links">
+                            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="proj-link-btn">Details</a>
+                            {% if project.live_url %}
+                                <a href="{{ project.live_url }}" target="_blank" class="proj-link-btn proj-link-ghost">Live ↗</a>
+                            {% endif %}
+                            {% if project.repo_url %}
+                                <a href="{{ project.repo_url }}" target="_blank" class="proj-link-btn proj-link-ghost">Code</a>
+                            {% endif %}
+                        </div>
                     </div>
-                {% endfor %}
-            </div>
-        </section>
-    {% endif %}
+                </article>
+            {% endfor %}
+        </div>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <h3>Ready to Work Together?</h3>
-        <p>I'm always interested in hearing about new projects and opportunities.</p>
-        <a href="{{ url_for('contact_page') }}" class="btn btn-primary">Start a Conversation</a>
-    </section>
+        <div class="section-footer-cta">
+            <a href="{{ url_for('projects_page') }}" class="btn-secondary">View All Projects &rarr;</a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- ===== HOME CTA ===== -->
+<section id="home-cta">
+    <div class="section-wrap">
+        <div class="cta-card glass-card reveal">
+            <span class="section-eyebrow">Let's Collaborate</span>
+            <h2 class="section-title">Have a project in mind?</h2>
+            <p class="section-sub">I'm always open to discussing new ideas, creative collaborations, and freelance opportunities.</p>
+            <div class="cta-actions">
+                <a href="{{ url_for('contact_page') }}" class="btn-primary">Start a Conversation &rarr;</a>
+                <a href="{{ url_for('resume') }}" class="btn-secondary" target="_blank">Download Resume ↗</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== TYPING EFFECT ===== -->
+<script>
+    (function () {
+        const phrases = [
+            '{{ profile.title if profile else "Full-Stack Developer" }}',
+            'Python & Flask Expert',
+            'UI/UX Enthusiast',
+            'Problem Solver'
+        ];
+        const el = document.getElementById('typing-text');
+        let pIdx = 0, cIdx = 0, deleting = false;
+
+        function tick() {
+            const phrase = phrases[pIdx];
+            if (!deleting) {
+                el.textContent = phrase.slice(0, ++cIdx);
+                if (cIdx === phrase.length) {
+                    deleting = true;
+                    setTimeout(tick, 2000);
+                    return;
+                }
+            } else {
+                el.textContent = phrase.slice(0, --cIdx);
+                if (cIdx === 0) {
+                    deleting = false;
+                    pIdx = (pIdx + 1) % phrases.length;
+                }
+            }
+            setTimeout(tick, deleting ? 50 : 90);
+        }
+        tick();
+    })();
+</script>
+
 {% endblock %}

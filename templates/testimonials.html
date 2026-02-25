@@ -1,54 +1,56 @@
 {% extends "layout.html" %}
 
-{% block title %}Testimonials - Portfolio{% endblock %}
+{% block title %}Testimonials{% endblock %}
 
 {% block content %}
-    <section class="testimonials-page-section">
-        <div class="page-header">
-            <h2>Testimonials</h2>
-            <p>What people say about working with me</p>
-        </div>
 
-        {% if testimonials %}
-            <div class="testimonials-container">
-                {% for testimonial in testimonials %}
-                    <div class="testimonial-card">
-                        <div class="testimonial-header">
-                            <div class="testimonial-author-info">
-                                {% if testimonial.author_image %}
-                                    <img src="{{ testimonial.author_image }}" alt="{{ testimonial.author_name }}" class="author-image">
+<div class="page-hero reveal">
+    <span class="section-eyebrow">Social Proof</span>
+    <h1 class="page-hero-title">What People <span class="gradient-text">Say</span></h1>
+    <p class="page-hero-sub">Honest words from colleagues, clients, and collaborators.</p>
+</div>
+
+<section id="testimonials-page">
+    {% if testimonials %}
+        <div class="testimonials-grid">
+            {% for t in testimonials %}
+                <div class="testimonial-card glass-card reveal">
+                    <div class="testimonial-top">
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                {% if t.author_image %}
+                                    <img src="{{ t.author_image }}" alt="{{ t.author_name }}">
                                 {% else %}
-                                    <div class="author-image-placeholder">
-                                        {{ testimonial.author_name[0] }}
-                                    </div>
+                                    {{ t.author_name[0] | upper }}
                                 {% endif %}
-                                <div class="author-details">
-                                    <h4>{{ testimonial.author_name }}</h4>
-                                    <p class="author-title">{{ testimonial.author_title }} at {{ testimonial.author_company }}</p>
-                                </div>
                             </div>
-                            <div class="testimonial-rating">
-                                {% for i in range(testimonial.rating) %}
-                                    <span class="star">★</span>
-                                {% endfor %}
+                            <div>
+                                <p class="author-name">{{ t.author_name }}</p>
+                                <p class="author-role">{{ t.author_title }} &middot; {{ t.author_company }}</p>
                             </div>
                         </div>
-                        <p class="testimonial-content">{{ testimonial.content }}</p>
-                        <p class="testimonial-date">{{ testimonial.created_at.strftime('%B %Y') }}</p>
+                        <div class="star-rating">
+                            {% for i in range(t.rating) %}<span class="star">★</span>{% endfor %}
+                        </div>
                     </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="empty-state">
-                <p>No testimonials yet.</p>
-            </div>
-        {% endif %}
+                    <p class="testimonial-quote">"{{ t.content }}"</p>
+                    <p class="testimonial-date">{{ t.created_at.strftime('%B %Y') }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>No testimonials yet — be the first! 🌟</p>
+        </div>
+    {% endif %}
 
-        <section class="testimonial-cta">
-            <h3>Have you worked with me?</h3>
+    <div class="testimonials-cta-block">
+        <div class="testimonials-cta-card glass-card reveal">
+            <h3>Have we worked together?</h3>
             <p>Share your experience and help others learn about what it's like to collaborate with me.</p>
-            <a href="{{ url_for('contact_page') }}" class="btn btn-secondary">Send Feedback</a>
-        </section>
-    </section>
-{% endblock %}
+            <a href="{{ url_for('contact_page') }}" class="btn-primary">Send Feedback &rarr;</a>
+        </div>
+    </div>
+</section>
 
+{% endblock %}

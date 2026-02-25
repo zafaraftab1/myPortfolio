@@ -1,60 +1,57 @@
 {% extends "layout.html" %}
 
-{% block title %}Projects - Portfolio{% endblock %}
+{% block title %}Projects{% endblock %}
 
 {% block content %}
-    <section class="projects-page-section">
-        <div class="page-header">
-            <h2>My Projects</h2>
-            <p>A collection of projects showcasing my skills in full-stack development</p>
-        </div>
 
-        {% if projects %}
-            <div class="projects-grid-full">
-                {% for project in projects %}
-                    <div class="project-card-full">
+<div class="page-hero reveal">
+    <span class="section-eyebrow">Portfolio</span>
+    <h1 class="page-hero-title">My <span class="gradient-text">Projects</span></h1>
+    <p class="page-hero-sub">A collection of work that reflects my skills, curiosity, and commitment to quality.</p>
+</div>
+
+<section id="projects-page">
+    {% if projects %}
+        <div class="projects-full-grid">
+            {% for project in projects %}
+                <article class="project-full-card glass-card reveal">
+                    <div class="proj-full-img-wrap">
                         {% if project.image_url %}
-                            <img src="{{ project.image_url }}" alt="{{ project.title }}" class="project-image-full">
+                            <img src="{{ project.image_url }}" alt="{{ project.title }}" class="proj-full-img">
                         {% else %}
-                            <div class="project-image-placeholder-full">
+                            <div class="proj-full-placeholder">
+                                <span class="proj-full-placeholder-icon">🛠️</span>
                                 <span>{{ project.title }}</span>
                             </div>
                         {% endif %}
-                        <div class="project-info-full">
-                            <h3>{{ project.title }}</h3>
-                            <p class="project-description">{{ project.description }}</p>
-
-                            <div class="tech-stack-full">
-                                <strong>Tech Stack:</strong>
-                                {% for tech in project.tech_stack.split(', ') %}
-                                    <span class="tech-badge-full">{{ tech }}</span>
-                                {% endfor %}
-                            </div>
-
-                            <div class="project-actions">
-                                {% if project.live_url %}
-                                    <a href="{{ project.live_url }}" target="_blank" class="project-link">
-                                        🔗 Live Project
-                                    </a>
-                                {% endif %}
-                                {% if project.repo_url %}
-                                    <a href="{{ project.repo_url }}" target="_blank" class="project-link">
-                                        💻 View Code
-                                    </a>
-                                {% endif %}
-                                <a href="{{ url_for('project_detail', project_id=project.id) }}" class="project-link">
-                                    📄 Details
-                                </a>
-                            </div>
+                        <div class="proj-full-overlay"></div>
+                    </div>
+                    <div class="proj-full-body">
+                        <h3 class="proj-full-title">{{ project.title }}</h3>
+                        <p class="proj-full-desc">{{ project.description }}</p>
+                        <div class="proj-full-stack">
+                            {% for tech in project.tech_stack.split(', ') %}
+                                <span class="proj-full-badge">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="proj-full-links">
+                            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="proj-link-btn">Details</a>
+                            {% if project.live_url %}
+                                <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="proj-link-btn proj-link-ghost">Live ↗</a>
+                            {% endif %}
+                            {% if project.repo_url %}
+                                <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="proj-link-btn proj-link-ghost">Code</a>
+                            {% endif %}
                         </div>
                     </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="empty-state">
-                <p>No projects to display yet.</p>
-            </div>
-        {% endif %}
-    </section>
-{% endblock %}
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>No projects to display yet. Check back soon! 🚧</p>
+        </div>
+    {% endif %}
+</section>
 
+{% endblock %}

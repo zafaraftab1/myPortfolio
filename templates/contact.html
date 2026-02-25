@@ -1,98 +1,86 @@
 {% extends "layout.html" %}
 
-{% block title %}Contact - Portfolio{% endblock %}
+{% block title %}Contact{% endblock %}
 
 {% block content %}
-    <section class="contact-page-section">
-        <div class="page-header">
-            <h2>Get In Touch</h2>
-            <p>Have a question or proposal? Feel free to reach out!</p>
-        </div>
 
-        <div class="contact-container">
-            <div class="contact-form-wrapper">
-                <form method="POST" action="{{ url_for('contact_page') }}" class="contact-form">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            required
-                            placeholder="Your Full Name"
-                            autocomplete="name"
-                        >
-                    </div>
+<div class="page-hero reveal">
+    <span class="section-eyebrow">Say Hello</span>
+    <h1 class="page-hero-title">Get In <span class="gradient-text">Touch</span></h1>
+    <p class="page-hero-sub">Have a question, proposal, or just want to connect? I'd love to hear from you.</p>
+</div>
 
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            required
-                            placeholder="your.email@example.com"
-                            autocomplete="email"
-                        >
-                    </div>
+<section id="contact-page">
+    <div class="contact-grid">
 
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input
-                            type="text"
-                            id="subject"
-                            name="subject"
-                            required
-                            placeholder="What is this about?"
-                        >
-                    </div>
+        <!-- ===== FORM ===== -->
+        <div class="contact-form-card glass-card reveal">
+            <h2>Send a Message</h2>
+            <p>Fill in the form below and I'll get back to you as soon as possible.</p>
 
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea
-                            id="message"
-                            name="message"
-                            required
-                            rows="6"
-                            placeholder="Tell me more about your project or inquiry..."
-                            minlength="10"
-                        ></textarea>
-                        <small>Minimum 10 characters</small>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary submit-btn">Send Message</button>
-                </form>
-            </div>
-
-            <div class="contact-info">
-                <h3>Other Ways to Reach Me</h3>
-                <div class="contact-details">
-                    <div class="contact-item">
-                        <h4>Email</h4>
-                        <p><a href="mailto:you@example.com">you@example.com</a></p>
-                    </div>
-                    <div class="contact-item">
-                        <h4>Phone</h4>
-                        <p><a href="tel:+923000000000">+92 300 000 0000</a></p>
-                    </div>
-                    <div class="contact-item">
-                        <h4>Location</h4>
-                        <p>Lahore, Pakistan</p>
-                    </div>
-                    <div class="contact-item">
-                        <h4>Social</h4>
-                        <div class="social-links-contact">
-                            <a href="https://linkedin.com/in/your-handle" target="_blank">LinkedIn</a>
-                            <a href="https://github.com/your-handle" target="_blank">GitHub</a>
-                        </div>
-                    </div>
+            <form method="POST" action="{{ url_for('contact_page') }}" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required placeholder="John Doe" autocomplete="name">
                 </div>
 
-                <div class="response-time">
-                    <p>⏱️ I typically respond within 24-48 hours</p>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="john@example.com" autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required placeholder="Project Inquiry">
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required rows="6" placeholder="Tell me about your project or idea..." minlength="10"></textarea>
+                    <small>Minimum 10 characters</small>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
+                    Send Message &rarr;
+                </button>
+            </form>
+        </div>
+
+        <!-- ===== SIDEBAR ===== -->
+        <div class="contact-info-sidebar">
+            <div class="info-card glass-card reveal">
+                <span class="info-icon">📧</span>
+                <h4>Email</h4>
+                <a href="mailto:zafar@example.com">zafar@example.com</a>
+            </div>
+
+            <div class="info-card glass-card reveal">
+                <span class="info-icon">📍</span>
+                <h4>Location</h4>
+                <p>Lahore, Pakistan</p>
+            </div>
+
+            <div class="info-card glass-card reveal">
+                <span class="info-icon">💼</span>
+                <h4>Availability</h4>
+                <p>Open to freelance &amp; full-time roles</p>
+            </div>
+
+            <div class="info-card glass-card reveal">
+                <span class="info-icon">🔗</span>
+                <h4>Social</h4>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.25rem;">
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="about-social-btn">GitHub ↗</a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="about-social-btn">LinkedIn ↗</a>
                 </div>
             </div>
+
+            <div class="response-badge reveal">
+                <span>⚡</span>
+                <span>Typically responds within 24 hours</span>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
+
 {% endblock %}
-

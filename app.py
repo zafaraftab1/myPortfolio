@@ -241,7 +241,15 @@ def home():
     profile = Profile.query.first()
     projects = Project.query.order_by(Project.id.asc()).limit(3).all()
     skills = Skill.query.order_by(Skill.category.asc()).all()
-    return render_template("home.html", profile=profile, projects=projects, skills=skills)
+    skills_by_category = {}
+    for skill in skills:
+        skills_by_category.setdefault(skill.category, []).append(skill)
+    return render_template(
+        "home.html",
+        profile=profile,
+        projects=projects,
+        skills_by_category=skills_by_category,
+    )
 
 
 @app.route("/about")
@@ -249,7 +257,19 @@ def about():
     profile = Profile.query.first()
     experiences = Experience.query.order_by(Experience.id.asc()).all()
     skills = Skill.query.order_by(Skill.category.asc()).all()
-    return render_template("about.html", profile=profile, experiences=experiences, skills=skills)
+    skills_by_category = {}
+    for skill in skills:
+        skills_by_category.setdefault(skill.category, []).append(skill)
+
+    for exp in experiences:
+        exp.highlights_list = exp.highlights.split("||") if exp.highlights else []
+
+    return render_template(
+        "about.html",
+        profile=profile,
+        experiences=experiences,
+        skills_by_category=skills_by_category,
+    )
 
 
 @app.route("/projects")

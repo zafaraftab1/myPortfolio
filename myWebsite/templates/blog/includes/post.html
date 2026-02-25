@@ -1,14 +1,17 @@
 {% load static %}
-<li style="width: 100%">
-    <article class="post">
-        <a href="{% url 'postDetails' post.slug %}">
-            <img src="{% static 'blog/images/'|add:post.image %}" alt="{{ post.title }}" />
-            <div class="post__content">
-                <h3>{{ post.title }}</h3>
-                <p>
-                    {{ post.excerpt }}
-                </p>
-            </div>
-        </a>
-    </article>
-</li>
+
+<article class="post-card glass-card">
+    <a href="{% url 'postDetails' post.slug %}" class="post-card-link">
+        <div class="post-card-img-wrap">
+            <img src="{% static 'blog/images/' %}{{ post.image }}" alt="{{ post.title }}" class="post-card-img"/>
+            <div class="post-card-overlay"></div>
+            <span class="post-card-tag">Article</span>
+        </div>
+        <div class="post-card-body">
+            <time class="post-card-date">{{ post.date|date:"d M Y" }}</time>
+            <h3 class="post-card-title">{{ post.title }}</h3>
+            <p class="post-card-excerpt">{{ post.excerpt }}</p>
+            <span class="post-card-cta">Read more →</span>
+        </div>
+    </a>
+</article>

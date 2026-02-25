@@ -67,33 +67,26 @@
     {% endif %}
 
     <!-- Skills Section -->
-    {% if skills %}
+    {% if skills_by_category %}
         <section class="skills-section">
             <h3>Skills</h3>
             <div class="skills-container">
-                {% set current_category = '' %}
-                {% for skill in skills %}
-                    {% if skill.category != current_category %}
-                        {% if current_category != '' %}
-                            </div>
-                        {% endif %}
-                        <div class="skill-category">
-                            <h4>{{ skill.category }}</h4>
-                            <div class="skills-list">
-                        {% set current_category = skill.category %}
-                    {% endif %}
-                    <div class="skill-item">
-                        <div class="skill-name">{{ skill.name }}</div>
-                        <div class="skill-bar">
-                            <div class="skill-bar-fill" style="width: {% if skill.proficiency == 'Expert' %}95{% elif skill.proficiency == 'Intermediate' %}70{% else %}40{% endif %}%"></div>
+                {% for category, category_skills in skills_by_category.items() %}
+                    <div class="skill-category">
+                        <h4>{{ category }}</h4>
+                        <div class="skills-list">
+                            {% for skill in category_skills %}
+                                <div class="skill-item">
+                                    <div class="skill-name">{{ skill.name }}</div>
+                                    <div class="skill-bar">
+                                        <div class="skill-bar-fill" style="width: {% if skill.proficiency == 'Expert' %}95{% elif skill.proficiency == 'Intermediate' %}70{% else %}40{% endif %}%"></div>
+                                    </div>
+                                    <div class="skill-level">{{ skill.proficiency }}</div>
+                                </div>
+                            {% endfor %}
                         </div>
-                        <div class="skill-level">{{ skill.proficiency }}</div>
                     </div>
                 {% endfor %}
-                {% if current_category != '' %}
-                    </div>
-                </div>
-                {% endif %}
             </div>
         </section>
     {% endif %}
@@ -105,4 +98,3 @@
         <a href="{{ url_for('contact_page') }}" class="btn btn-primary">Start a Conversation</a>
     </section>
 {% endblock %}
-

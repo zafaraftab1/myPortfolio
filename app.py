@@ -3,7 +3,6 @@ import os
 import re
 import logging
 from logging.handlers import RotatingFileHandler
-
 from flask import Flask, jsonify, request, send_from_directory, render_template, redirect, url_for, flash
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -39,7 +38,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "changeme")
 
-
+# ============= Database Models =============
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)

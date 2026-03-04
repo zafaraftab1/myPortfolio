@@ -102,7 +102,7 @@ class Experience(db.Model):
             "highlights": self.highlights.split("||"),
         }
 
-
+# ContactMessage is stored in the database but not exposed via API or frontend for security/privacy reasons. It's only accessible to admins via database or future admin UI.
 class ContactMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)

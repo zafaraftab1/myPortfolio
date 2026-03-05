@@ -197,8 +197,8 @@ body.cursor-hover #cursor-dot {
 
 .nav-links-desktop a {
   font-family: var(--font-mono);
-  font-size: 0.69rem;
-  letter-spacing: 0.13em;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-3);
   padding: 8px 13px;
@@ -236,6 +236,8 @@ body.cursor-hover #cursor-dot {
   border-radius: 4px;
   padding: 7px 14px !important;
   margin-left: 6px;
+  font-size: 0.76rem !important;
+  letter-spacing: 0.08em !important;
   transition: background var(--t-fast), box-shadow var(--t-fast) !important;
 }
 
@@ -335,9 +337,9 @@ footer {
 
 .footer-copy {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.72rem;
   color: var(--text-3);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-align: center;
   white-space: nowrap;
 }
@@ -351,9 +353,9 @@ footer {
 
 .footer-links a {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.72rem;
   color: var(--text-3);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   transition: color var(--t-fast);
   cursor: none;
@@ -461,8 +463,8 @@ footer {
 
 .section-eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.22em;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 12px;
@@ -475,7 +477,7 @@ footer {
 
 .section-title {
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.1;
@@ -483,7 +485,7 @@ footer {
 }
 
 .section-sub {
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--text-2);
   max-width: 540px;
   line-height: 1.75;

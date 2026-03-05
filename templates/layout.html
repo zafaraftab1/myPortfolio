@@ -41,6 +41,9 @@
       <a href="{{ url_for('testimonials_page') }}" class="{% if request.endpoint == 'testimonials_page' %}active{% endif %}">Testimonials</a>
       <a href="{{ url_for('contact_page') }}"     class="{% if request.endpoint == 'contact_page' %}active{% endif %}">Contact</a>
       <a href="{{ url_for('resume') }}" class="nav-resume-btn" target="_blank" rel="noopener">Resume ↗</a>
+      <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle theme">
+        <i class="fa-solid fa-sun" id="theme-icon"></i>
+      </button>
     </div>
 
     <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
@@ -71,6 +74,22 @@
     </div>
   {% endif %}
 {% endwith %}
+
+<!-- ===== FLOATING SOCIAL SIDEBAR ===== -->
+<div class="social-sidebar" id="social-sidebar">
+  <a href="{{ profile.github if profile and profile.github else 'https://github.com/zafaraftab1' }}"
+     target="_blank" rel="noopener noreferrer" class="sidebar-link" title="GitHub">
+    <i class="fa-brands fa-github"></i>
+  </a>
+  <a href="{{ profile.linkedin if profile and profile.linkedin else 'https://linkedin.com/in/zafaraftab' }}"
+     target="_blank" rel="noopener noreferrer" class="sidebar-link" title="LinkedIn">
+    <i class="fa-brands fa-linkedin-in"></i>
+  </a>
+  <a href="mailto:{{ profile.email if profile and profile.email else 'aftab@example.com' }}"
+     class="sidebar-link" title="Email">
+    <i class="fa-solid fa-envelope"></i>
+  </a>
+</div>
 
 <!-- ===== MAIN CONTENT ===== -->
 <main id="main-content">

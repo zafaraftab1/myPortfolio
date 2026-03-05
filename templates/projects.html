@@ -1,57 +1,55 @@
 {% extends "layout.html" %}
 
-{% block title %}Projects{% endblock %}
+{% block title %}Projects — Zafar Aftab{% endblock %}
 
 {% block content %}
 
 <div class="page-hero reveal">
-    <span class="section-eyebrow">Portfolio</span>
-    <h1 class="page-hero-title">My <span class="gradient-text">Projects</span></h1>
-    <p class="page-hero-sub">A collection of work that reflects my skills, curiosity, and commitment to quality.</p>
+  <span class="page-hero-eyebrow">Portfolio</span>
+  <h1 class="page-hero-title">My <span class="gradient-text">Projects</span></h1>
+  <p class="page-hero-sub">A collection of work reflecting my expertise in Python, AI, and backend systems engineering.</p>
 </div>
 
 <section id="projects-page">
-    {% if projects %}
-        <div class="projects-full-grid">
-            {% for project in projects %}
-                <article class="project-full-card glass-card reveal">
-                    <div class="proj-full-img-wrap">
-                        {% if project.image_url %}
-                            <img src="{{ project.image_url }}" alt="{{ project.title }}" class="proj-full-img">
-                        {% else %}
-                            <div class="proj-full-placeholder">
-                                <span class="proj-full-placeholder-icon">🛠️</span>
-                                <span>{{ project.title }}</span>
-                            </div>
-                        {% endif %}
-                        <div class="proj-full-overlay"></div>
-                    </div>
-                    <div class="proj-full-body">
-                        <h3 class="proj-full-title">{{ project.title }}</h3>
-                        <p class="proj-full-desc">{{ project.description }}</p>
-                        <div class="proj-full-stack">
-                            {% for tech in project.tech_stack.split(', ') %}
-                                <span class="proj-full-badge">{{ tech }}</span>
-                            {% endfor %}
-                        </div>
-                        <div class="proj-full-links">
-                            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="proj-link-btn">Details</a>
-                            {% if project.live_url %}
-                                <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="proj-link-btn proj-link-ghost">Live ↗</a>
-                            {% endif %}
-                            {% if project.repo_url %}
-                                <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="proj-link-btn proj-link-ghost">Code</a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </article>
+  {% if projects %}
+    <div class="projects-full-grid">
+      {% for project in projects %}
+      <article class="project-full-card glass-card reveal">
+        <div class="proj-full-img-wrap">
+          {% if project.image_url %}
+            <img src="{{ project.image_url }}" alt="{{ project.title }}" class="proj-full-img">
+          {% else %}
+            <div class="proj-full-placeholder">
+              <span class="proj-full-placeholder-icon">⚡</span>
+              <span>{{ project.title }}</span>
+            </div>
+          {% endif %}
+          <div class="proj-full-overlay"></div>
+        </div>
+        <div class="proj-full-body">
+          <h3 class="proj-full-title">{{ project.title }}</h3>
+          <p class="proj-full-desc">{{ project.description }}</p>
+          <div class="proj-full-stack">
+            {% for tech in project.tech_stack.split(', ') %}
+              <span class="proj-full-badge">{{ tech }}</span>
             {% endfor %}
+          </div>
+          <div class="proj-full-links">
+            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="proj-link-btn">Details</a>
+            {% if project.live_url %}
+              <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="proj-link-btn proj-link-ghost">Live ↗</a>
+            {% endif %}
+            {% if project.repo_url %}
+              <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="proj-link-btn proj-link-ghost">Code</a>
+            {% endif %}
+          </div>
         </div>
-    {% else %}
-        <div class="empty-state">
-            <p>No projects to display yet. Check back soon! 🚧</p>
-        </div>
-    {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">// No projects found. Check back soon.</div>
+  {% endif %}
 </section>
 
 {% endblock %}

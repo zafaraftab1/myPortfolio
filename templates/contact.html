@@ -1,86 +1,93 @@
 {% extends "layout.html" %}
 
-{% block title %}Contact{% endblock %}
+{% block title %}Contact — Zafar Aftab{% endblock %}
 
 {% block content %}
 
 <div class="page-hero reveal">
-    <span class="section-eyebrow">Say Hello</span>
-    <h1 class="page-hero-title">Get In <span class="gradient-text">Touch</span></h1>
-    <p class="page-hero-sub">Have a question, proposal, or just want to connect? I'd love to hear from you.</p>
+  <span class="page-hero-eyebrow">Say Hello</span>
+  <h1 class="page-hero-title">Get In <span class="gradient-text">Touch</span></h1>
+  <p class="page-hero-sub">Have a project, proposal, or just want to connect? I'd love to hear from you.</p>
 </div>
 
 <section id="contact-page">
-    <div class="contact-grid">
+  <div class="contact-grid">
 
-        <!-- ===== FORM ===== -->
-        <div class="contact-form-card glass-card reveal">
-            <h2>Send a Message</h2>
-            <p>Fill in the form below and I'll get back to you as soon as possible.</p>
+    <!-- ===== FORM ===== -->
+    <div class="contact-form-card glass-card reveal">
+      <h2>Send a Message</h2>
+      <p>Fill in the form below and I'll get back to you within 24 hours.</p>
 
-            <form method="POST" action="{{ url_for('contact_page') }}" class="contact-form">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required placeholder="John Doe" autocomplete="name">
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required placeholder="john@example.com" autocomplete="email">
-                </div>
-
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required placeholder="Project Inquiry">
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" required rows="6" placeholder="Tell me about your project or idea..." minlength="10"></textarea>
-                    <small>Minimum 10 characters</small>
-                </div>
-
-                <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
-                    Send Message &rarr;
-                </button>
-            </form>
+      <form method="POST" action="{{ url_for('contact_page') }}" class="contact-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required placeholder="John Doe" autocomplete="name">
         </div>
 
-        <!-- ===== SIDEBAR ===== -->
-        <div class="contact-info-sidebar">
-            <div class="info-card glass-card reveal">
-                <span class="info-icon">📧</span>
-                <h4>Email</h4>
-                <a href="mailto:zafar@example.com">zafar@example.com</a>
-            </div>
-
-            <div class="info-card glass-card reveal">
-                <span class="info-icon">📍</span>
-                <h4>Location</h4>
-                <p>Lahore, Pakistan</p>
-            </div>
-
-            <div class="info-card glass-card reveal">
-                <span class="info-icon">💼</span>
-                <h4>Availability</h4>
-                <p>Open to freelance &amp; full-time roles</p>
-            </div>
-
-            <div class="info-card glass-card reveal">
-                <span class="info-icon">🔗</span>
-                <h4>Social</h4>
-                <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.25rem;">
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="about-social-btn">GitHub ↗</a>
-                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="about-social-btn">LinkedIn ↗</a>
-                </div>
-            </div>
-
-            <div class="response-badge reveal">
-                <span>⚡</span>
-                <span>Typically responds within 24 hours</span>
-            </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required placeholder="john@example.com" autocomplete="email">
         </div>
+
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" required placeholder="Project Inquiry">
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required rows="6"
+            placeholder="Tell me about your project or idea..." minlength="10"></textarea>
+          <small>Minimum 10 characters</small>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
+          Send Message &rarr;
+        </button>
+      </form>
     </div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <div class="contact-info-sidebar">
+
+      <div class="info-card glass-card reveal">
+        <span class="info-icon">✉</span>
+        <h4>Email</h4>
+        <a href="mailto:{{ profile.email if profile and profile.email else 'zafar@example.com' }}">
+          {{ profile.email if profile and profile.email else 'zafar@example.com' }}
+        </a>
+      </div>
+
+      <div class="info-card glass-card reveal">
+        <span class="info-icon">📍</span>
+        <h4>Location</h4>
+        <p>{{ profile.location if profile and profile.location else 'Lahore, Pakistan' }}</p>
+      </div>
+
+      <div class="info-card glass-card reveal">
+        <span class="info-icon">💼</span>
+        <h4>Availability</h4>
+        <p>Open to freelance &amp; full-time roles</p>
+      </div>
+
+      <div class="info-card glass-card reveal">
+        <span class="info-icon">🔗</span>
+        <h4>Social</h4>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+          <a href="{{ profile.github if profile and profile.github else 'https://github.com' }}"
+             target="_blank" rel="noopener noreferrer" class="about-social-btn">GitHub ↗</a>
+          <a href="{{ profile.linkedin if profile and profile.linkedin else 'https://linkedin.com' }}"
+             target="_blank" rel="noopener noreferrer" class="about-social-btn">LinkedIn ↗</a>
+        </div>
+      </div>
+
+      <div class="response-badge reveal">
+        <span>⚡</span>
+        <span>Typically responds within 24 hours</span>
+      </div>
+
+    </div>
+  </div>
 </section>
 
 {% endblock %}

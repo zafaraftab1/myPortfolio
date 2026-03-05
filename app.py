@@ -227,9 +227,9 @@ def contact():
 def resume():
     return send_from_directory(
         "static",
-        "resume.pdf",
+        "md_aftab_resume.pdf",
         as_attachment=True,
-        download_name="Resume.pdf",
+        download_name="Zafar_Aftab_Resume.pdf",
     )
 
 

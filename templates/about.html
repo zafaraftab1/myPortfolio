@@ -1,154 +1,158 @@
 {% extends "layout.html" %}
 
-{% block title %}About{% endblock %}
+{% block title %}About — Zafar Aftab{% endblock %}
 
 {% block content %}
 
 <div class="page-hero reveal">
-    <span class="section-eyebrow">About Me</span>
-    <h1 class="page-hero-title">Passionate <span class="gradient-text">Developer</span></h1>
-    <p class="page-hero-sub">Building the future, one clean commit at a time.</p>
+  <span class="page-hero-eyebrow">About Me</span>
+  <h1 class="page-hero-title">Passionate <span class="gradient-text">Developer</span></h1>
+  <p class="page-hero-sub">Building intelligent backend systems and AI solutions, one clean commit at a time.</p>
 </div>
 
 <!-- ===== ABOUT GRID ===== -->
 <section id="about-page">
-    <div class="about-grid">
+  <div class="about-grid">
 
-        <!-- Left: bio + contact -->
-        <div class="about-card glass-card reveal">
-            <h2>Who I Am</h2>
-            {% if profile %}
-                <p>{{ profile.summary }}</p>
-                <p>Based in <strong>{{ profile.location }}</strong>, I specialise in full-stack development with a focus on clean, performant, and maintainable code.</p>
-            {% else %}
-                <p>I'm a passionate full-stack developer who loves building products that make a real difference.</p>
-            {% endif %}
+    <!-- Left: Bio -->
+    <div class="about-card glass-card reveal">
+      <h2>Who I Am</h2>
+      {% if profile %}
+        <p>{{ profile.summary }}</p>
+        <p>Based in <strong>{{ profile.location }}</strong>, I specialise in backend development with Python, Flask, and cutting-edge GenAI technologies — building systems that scale and perform.</p>
+      {% else %}
+        <p>I'm a passionate developer specializing in Python backend development and AI-powered applications.</p>
+      {% endif %}
 
-            <div class="about-contact-list">
-                {% if profile %}
-                    <div class="about-contact-item">
-                        <span class="ci-icon">📧</span>
-                        <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
-                    </div>
-                    {% if profile.phone %}
-                    <div class="about-contact-item">
-                        <span class="ci-icon">📱</span>
-                        <a href="tel:{{ profile.phone }}">{{ profile.phone }}</a>
-                    </div>
-                    {% endif %}
-                    <div class="about-contact-item">
-                        <span class="ci-icon">📍</span>
-                        <span>{{ profile.location }}</span>
-                    </div>
-                {% endif %}
-            </div>
+      <div class="about-contact-list">
+        {% if profile %}
+          <div class="about-contact-item">
+            <span class="ci-icon">✉</span>
+            <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+          </div>
+          {% if profile.phone %}
+          <div class="about-contact-item">
+            <span class="ci-icon">📱</span>
+            <a href="tel:{{ profile.phone }}">{{ profile.phone }}</a>
+          </div>
+          {% endif %}
+          <div class="about-contact-item">
+            <span class="ci-icon">📍</span>
+            <span>{{ profile.location }}</span>
+          </div>
+        {% endif %}
+      </div>
 
-            <div class="about-social-links">
-                {% if profile and profile.github %}
-                    <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" class="about-social-btn">GitHub ↗</a>
-                {% endif %}
-                {% if profile and profile.linkedin %}
-                    <a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="about-social-btn">LinkedIn ↗</a>
-                {% endif %}
-                <a href="{{ url_for('contact_page') }}" class="btn-primary">Hire Me &rarr;</a>
-            </div>
-        </div>
-
-        <!-- Right: highlight cards -->
-        <div class="highlight-cards">
-            <div class="highlight-card glass-card reveal">
-                <span class="h-icon">💡</span>
-                <h3>Creative Problem Solver</h3>
-                <p>I enjoy dissecting complex challenges and engineering elegant, scalable solutions.</p>
-            </div>
-            <div class="highlight-card glass-card reveal">
-                <span class="h-icon">🚀</span>
-                <h3>Full-Stack Focus</h3>
-                <p>Comfortable across the entire stack — from REST APIs to pixel-perfect frontends.</p>
-            </div>
-            <div class="highlight-card glass-card reveal">
-                <span class="h-icon">🤝</span>
-                <h3>Collaborative Spirit</h3>
-                <p>I thrive in team environments and believe great products are built together.</p>
-            </div>
-        </div>
+      <div class="about-social-links">
+        {% if profile and profile.github %}
+          <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" class="about-social-btn">GitHub ↗</a>
+        {% endif %}
+        {% if profile and profile.linkedin %}
+          <a href="{{ profile.linkedin }}" target="_blank" rel="noopener noreferrer" class="about-social-btn">LinkedIn ↗</a>
+        {% endif %}
+        <a href="{{ url_for('contact_page') }}" class="btn-primary">Hire Me &rarr;</a>
+      </div>
     </div>
+
+    <!-- Right: Highlights -->
+    <div class="highlight-cards">
+      <div class="highlight-card glass-card reveal">
+        <span class="h-icon">⚡</span>
+        <h3>AI &amp; GenAI Expert</h3>
+        <p>Building LLM-powered applications with LangChain, OpenAI, and Python. Turning AI research into production-ready systems.</p>
+      </div>
+      <div class="highlight-card glass-card reveal">
+        <span class="h-icon">🔧</span>
+        <h3>Backend Architect</h3>
+        <p>Designing scalable REST APIs and microservices with Flask, FastAPI, and PostgreSQL. Performance and reliability first.</p>
+      </div>
+      <div class="highlight-card glass-card reveal">
+        <span class="h-icon">🚀</span>
+        <h3>Problem Solver</h3>
+        <p>I thrive on complex challenges — from optimizing database queries to architecting distributed, fault-tolerant systems.</p>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <!-- ===== EXPERIENCE ===== -->
 {% if experiences %}
 <section id="experience-section">
-    <div class="exp-header section-wrap reveal">
-        <span class="section-eyebrow">Career</span>
-        <h2 class="section-title">Professional <span class="gradient-text">Experience</span></h2>
+  <div class="exp-header section-wrap reveal">
+    <span class="section-eyebrow">Career</span>
+    <h2 class="section-title">Professional <span class="gradient-text">Experience</span></h2>
+  </div>
+  <div class="timeline-wrap">
+    {% for exp in experiences %}
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card glass-card">
+        <p class="timeline-role">{{ exp.role }}</p>
+        <p class="timeline-company">{{ exp.company }} &middot; {{ exp.location }}</p>
+        <p class="timeline-period">{{ exp.start_date }} &ndash; {{ exp.end_date }}</p>
+        <ul class="timeline-highlights">
+          {% for h in exp.highlights_list %}
+            <li>{{ h }}</li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
-    <div class="timeline-wrap">
-        {% for exp in experiences %}
-            <div class="timeline-item reveal">
-                <div class="timeline-dot"></div>
-                <div class="timeline-card glass-card">
-                    <p class="timeline-role">{{ exp.role }}</p>
-                    <p class="timeline-company">{{ exp.company }} &middot; {{ exp.location }}</p>
-                    <p class="timeline-period">{{ exp.start_date }} &ndash; {{ exp.end_date }}</p>
-                    <ul class="timeline-highlights">
-                        {% for h in exp.highlights_list %}
-                            <li>{{ h }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+    {% endfor %}
+  </div>
 </section>
 {% endif %}
 
 <!-- ===== SKILLS ===== -->
 {% if skills_by_category %}
 <section id="skills-section">
-    <div class="skills-header section-wrap reveal">
-        <span class="section-eyebrow">Expertise</span>
-        <h2 class="section-title">Technical <span class="gradient-text">Skills</span></h2>
-    </div>
-    <div class="skills-grid">
-        {% for category, category_skills in skills_by_category.items() %}
-            <div class="skill-group-card glass-card reveal">
-                <p class="skill-group-name">{{ category }}</p>
-                <div class="skill-list">
-                    {% for skill in category_skills %}
-                        <div class="skill-row">
-                            <div class="skill-name-row">
-                                <span class="skill-name">{{ skill.name }}</span>
-                                <span class="skill-level">{{ skill.proficiency }}</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-bar-fill" data-width="{% if skill.proficiency == 'Expert' %}95{% elif skill.proficiency == 'Intermediate' %}70{% else %}40{% endif %}"></div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
+  <div class="skills-header section-wrap reveal">
+    <span class="section-eyebrow">Expertise</span>
+    <h2 class="section-title">Technical <span class="gradient-text">Skills</span></h2>
+  </div>
+  <div class="skills-grid">
+    {% for category, category_skills in skills_by_category.items() %}
+    <div class="skill-group-card glass-card reveal">
+      <p class="skill-group-name">{{ category }}</p>
+      <div class="skill-list">
+        {% for skill in category_skills %}
+        <div class="skill-row">
+          <div class="skill-name-row">
+            <span class="skill-name">{{ skill.name }}</span>
+            <span class="skill-level">{{ skill.proficiency }}</span>
+          </div>
+          <div class="skill-bar">
+            <div class="skill-bar-fill"
+              data-width="{% if skill.proficiency == 'Expert' %}95{% elif skill.proficiency == 'Advanced' %}80{% elif skill.proficiency == 'Intermediate' %}65{% else %}40{% endif %}">
             </div>
+          </div>
+        </div>
         {% endfor %}
+      </div>
     </div>
+    {% endfor %}
+  </div>
 </section>
 
+{% block scripts %}
 <script>
-    // Animate skill bars when they enter the viewport
-    const barObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const fill = entry.target;
-                fill.style.width = fill.dataset.width + '%';
-                barObserver.unobserve(fill);
-            }
-        });
-    }, { threshold: 0.3 });
-
-    document.querySelectorAll('.skill-bar-fill').forEach(el => {
-        el.style.width = '0%';
-        el.style.transition = 'width 1s cubic-bezier(0.4, 0, 0.2, 1)';
-        barObserver.observe(el);
+  var barObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        var fill = entry.target;
+        fill.style.width = fill.dataset.width + '%';
+        barObs.unobserve(fill);
+      }
     });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.skill-bar-fill').forEach(function (el) {
+    el.style.width = '0%';
+    barObs.observe(el);
+  });
 </script>
+{% endblock %}
+
 {% endif %}
 
 {% endblock %}

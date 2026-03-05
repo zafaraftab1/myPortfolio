@@ -373,7 +373,7 @@
 
 /* ── HOME: FEATURED PROJECTS ── */
 #featured-projects {
-  padding: var(--section-pad) 0;
+  padding: 0 0 var(--section-pad);
 }
 
 .feat-projects-header {

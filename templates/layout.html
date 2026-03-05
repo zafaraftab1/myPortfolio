@@ -187,6 +187,31 @@
     });
   });
 
+  // ── Dark / Light Theme Toggle ─────────────────────────────
+  (function () {
+    var html      = document.documentElement;
+    var toggleBtn = document.getElementById('theme-toggle');
+    var themeIcon = document.getElementById('theme-icon');
+    var saved     = localStorage.getItem('portfolio-theme') || 'dark';
+
+    html.setAttribute('data-theme', saved);
+    updateIcon(saved);
+
+    function updateIcon(t) {
+      if (!themeIcon) return;
+      themeIcon.className = (t === 'light') ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+    }
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', function () {
+        var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('portfolio-theme', next);
+        updateIcon(next);
+      });
+    }
+  })();
+
   // ── GSAP Page Transition ─────────────────────────────────
   var overlay = document.getElementById('page-overlay');
   if (overlay && typeof gsap !== 'undefined') {

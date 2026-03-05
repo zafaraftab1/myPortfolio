@@ -1,190 +1,312 @@
 {% extends "layout.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Zafar Aftab — Python & GenAI Developer{% endblock %}
 
 {% block content %}
 
 <!-- ===== HERO ===== -->
 <section id="hero">
-    <div class="hero-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
+  <canvas id="particle-canvas"></canvas>
+  <div class="hero-grid"></div>
+  <div class="hero-scanlines"></div>
+  <div class="hero-vignette"></div>
+
+  <div class="hero-inner">
+
+    <!-- Text Side -->
+    <div class="hero-text">
+      <div class="hero-label">Hello World</div>
+
+      <h1 class="hero-name">
+        {{ profile.name if profile else 'Zafar Aftab' }}
+      </h1>
+
+      <div class="hero-role-wrap">
+        <span class="hero-role-prompt">$_&nbsp;</span>
+        <span class="typewriter-text" id="typewriter"></span>
+        <span class="type-cursor"></span>
+      </div>
+
+      <p class="hero-bio">
+        {{ profile.summary if profile else 'Building intelligent backend systems and AI-powered applications with Python, Flask, and cutting-edge GenAI technologies. Clean code. Real impact.' }}
+      </p>
+
+      <div class="hero-actions">
+        <a href="{{ url_for('projects_page') }}" class="btn-primary">
+          View Projects <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a href="{{ url_for('resume') }}" class="btn-outline" target="_blank" rel="noopener">
+          Download CV <i class="fa-solid fa-download"></i>
+        </a>
+      </div>
+
+      <div class="hero-socials">
+        <a href="{{ profile.github if profile and profile.github else 'https://github.com' }}"
+           target="_blank" rel="noopener noreferrer"
+           class="social-icon-btn" title="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="{{ profile.linkedin if profile and profile.linkedin else 'https://linkedin.com' }}"
+           target="_blank" rel="noopener noreferrer"
+           class="social-icon-btn" title="LinkedIn">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="mailto:{{ profile.email if profile and profile.email else 'zafar@example.com' }}"
+           class="social-icon-btn" title="Email">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
+      </div>
     </div>
 
-    <div class="hero-container">
-        <div class="hero-text">
-            <div class="hero-badge">
-                <span class="badge-dot"></span>
-                Available for work
-            </div>
-
-            <h1 class="hero-title">
-                Hi, I'm<br>
-                <span class="gradient-text">{{ profile.name if profile else 'Zafar Aftab' }}</span>
-            </h1>
-
-            <p class="hero-subtitle">
-                <span id="typing-text"></span><span class="typing-cursor">|</span>
-            </p>
-
-            <p class="hero-description">
-                {{ profile.summary if profile else 'Crafting elegant solutions to complex problems with clean code and creative thinking.' }}
-            </p>
-
-            <div class="hero-actions">
-                <a href="{{ url_for('contact_page') }}" class="btn-primary">Get In Touch &rarr;</a>
-                <a href="{{ url_for('projects_page') }}" class="btn-secondary">View Projects</a>
-            </div>
+    <!-- Avatar Side -->
+    <div class="hero-visual">
+      <div class="avatar-wrap">
+        <div class="avatar-glow"></div>
+        <div class="avatar-ring-outer"></div>
+        <div class="avatar-ring-dashed"></div>
+        <img
+          src="{{ url_for('static', filename='images/avatar.jpg') }}"
+          alt="{{ profile.name if profile else 'Zafar Aftab' }}"
+          class="avatar-img"
+          id="hero-avatar"
+        >
+        <div class="avatar-placeholder" id="hero-avatar-fallback" style="display:none;">
+          {{ (profile.name[:2].upper()) if profile else 'ZA' }}
         </div>
-
-        <div class="hero-visual">
-            <div class="avatar-ring">
-                <div class="avatar-glow"></div>
-                <div class="avatar-initials">
-                    {{ profile.name[:2].upper() if profile else 'ZA' }}
-                </div>
-            </div>
-            <div class="hero-stats">
-                <div class="stat-pill">
-                    <span class="stat-num">3+</span>
-                    <span class="stat-lbl">Years Exp.</span>
-                </div>
-                <div class="stat-pill">
-                    <span class="stat-num">{{ projects | length if projects else '10' }}+</span>
-                    <span class="stat-lbl">Projects</span>
-                </div>
-                <div class="stat-pill">
-                    <span class="stat-num">100%</span>
-                    <span class="stat-lbl">Committed</span>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <div class="scroll-hint">
-        <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
-        <span>Scroll</span>
+  </div>
+
+  <!-- Stats Bar -->
+  <div class="hero-stats-bar">
+    <div class="hero-stats-inner">
+      <div class="stat-item">
+        <div class="stat-number">4.3</div>
+        <div class="stat-label">Years Exp.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5+</div>
+        <div class="stat-label">Clients</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">9+</div>
+        <div class="stat-label">Projects</div>
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- ===== TECH STRIP ===== -->
 <section id="tech-strip">
-    <div class="section-wrap">
-        <div class="tech-scroll-track">
-            <div class="tech-item">🐍 Python</div>
-            <div class="tech-item">⚗️ Flask</div>
-            <div class="tech-item">🌐 JavaScript</div>
-            <div class="tech-item">⚛️ React</div>
-            <div class="tech-item">🐘 PostgreSQL</div>
-            <div class="tech-item">🐳 Docker</div>
-            <div class="tech-item">☁️ AWS</div>
-            <div class="tech-item">🐙 Git &amp; GitHub</div>
-            <div class="tech-item">🎨 CSS / Tailwind</div>
-            <div class="tech-item">🔧 REST APIs</div>
-        </div>
-    </div>
+  <div class="tech-scroll-track" id="tech-track">
+    {% set techs = ['Python', 'Flask', 'FastAPI', 'LangChain', 'OpenAI API', 'JavaScript', 'React', 'PostgreSQL', 'Docker', 'AWS', 'REST APIs', 'Git & GitHub', 'SQLAlchemy', 'Redis', 'Tailwind CSS'] %}
+    {% for tech in techs %}<div class="tech-item"><span class="tech-item-dot"></span>{{ tech }}</div>{% endfor %}
+    {% for tech in techs %}<div class="tech-item"><span class="tech-item-dot"></span>{{ tech }}</div>{% endfor %}
+  </div>
 </section>
 
 <!-- ===== FEATURED PROJECTS ===== -->
 {% if projects %}
 <section id="featured-projects">
-    <div class="section-wrap">
-        <div class="section-header reveal">
-            <span class="section-eyebrow">Portfolio</span>
-            <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
-            <p class="section-sub">A selection of my recent work — from web apps to APIs and beyond.</p>
-        </div>
+  <div class="feat-projects-header section-wrap reveal">
+    <span class="section-eyebrow">Portfolio</span>
+    <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
+    <p class="section-sub">A selection of my recent work — backend systems, AI tools, and full-stack applications.</p>
+  </div>
 
-        <div class="projects-grid">
-            {% for project in projects[:3] %}
-                <article class="proj-card glass-card reveal">
-                    <div class="proj-card-img-wrap">
-                        {% if project.image_url %}
-                            <img src="{{ project.image_url }}" alt="{{ project.title }}" class="proj-card-img">
-                        {% else %}
-                            <div class="proj-card-placeholder">
-                                <span class="proj-placeholder-icon">🛠️</span>
-                            </div>
-                        {% endif %}
-                        <div class="proj-card-overlay"></div>
-                    </div>
-                    <div class="proj-card-body">
-                        <div class="proj-tech-list">
-                            {% for tech in project.tech_stack.split(', ')[:3] %}
-                                <span class="proj-tech-badge">{{ tech }}</span>
-                            {% endfor %}
-                        </div>
-                        <h3 class="proj-card-title">{{ project.title }}</h3>
-                        <p class="proj-card-desc">{{ project.description }}</p>
-                        <div class="proj-card-links">
-                            <a href="{{ url_for('project_detail', project_id=project.id) }}" class="proj-link-btn">Details</a>
-                            {% if project.live_url %}
-                                <a href="{{ project.live_url }}" target="_blank" class="proj-link-btn proj-link-ghost">Live ↗</a>
-                            {% endif %}
-                            {% if project.repo_url %}
-                                <a href="{{ project.repo_url }}" target="_blank" class="proj-link-btn proj-link-ghost">Code</a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </article>
-            {% endfor %}
+  <div class="projects-grid">
+    {% for project in projects[:3] %}
+    <article class="proj-card glass-card reveal">
+      <div class="proj-card-img-wrap">
+        {% if project.image_url %}
+          <img src="{{ project.image_url }}" alt="{{ project.title }}" class="proj-card-img">
+        {% else %}
+          <div class="proj-card-placeholder">
+            <span class="proj-placeholder-icon">⚡</span>
+          </div>
+        {% endif %}
+        <div class="proj-card-overlay"></div>
+      </div>
+      <div class="proj-card-body">
+        <div class="proj-tech-list">
+          {% for tech in project.tech_stack.split(', ')[:3] %}
+            <span class="proj-tech-badge">{{ tech }}</span>
+          {% endfor %}
         </div>
+        <h3 class="proj-card-title">{{ project.title }}</h3>
+        <p class="proj-card-desc">{{ project.description }}</p>
+        <div class="proj-card-links">
+          <a href="{{ url_for('project_detail', project_id=project.id) }}" class="proj-link-btn">Details</a>
+          {% if project.live_url %}
+            <a href="{{ project.live_url }}" target="_blank" rel="noopener" class="proj-link-btn proj-link-ghost">Live ↗</a>
+          {% endif %}
+          {% if project.repo_url %}
+            <a href="{{ project.repo_url }}" target="_blank" rel="noopener" class="proj-link-btn proj-link-ghost">Code</a>
+          {% endif %}
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
 
-        <div class="section-footer-cta">
-            <a href="{{ url_for('projects_page') }}" class="btn-secondary">View All Projects &rarr;</a>
-        </div>
-    </div>
+  <div class="section-footer-cta reveal">
+    <a href="{{ url_for('projects_page') }}" class="btn-outline">View All Projects &rarr;</a>
+  </div>
 </section>
 {% endif %}
 
 <!-- ===== HOME CTA ===== -->
 <section id="home-cta">
-    <div class="section-wrap">
-        <div class="cta-card glass-card reveal">
-            <span class="section-eyebrow">Let's Collaborate</span>
-            <h2 class="section-title">Have a project in mind?</h2>
-            <p class="section-sub">I'm always open to discussing new ideas, creative collaborations, and freelance opportunities.</p>
-            <div class="cta-actions">
-                <a href="{{ url_for('contact_page') }}" class="btn-primary">Start a Conversation &rarr;</a>
-                <a href="{{ url_for('resume') }}" class="btn-secondary" target="_blank">Download Resume ↗</a>
-            </div>
-        </div>
+  <div class="section-wrap">
+    <div class="cta-card glass-card reveal">
+      <span class="section-eyebrow">Let's Build Together</span>
+      <h2 class="section-title">Have a project <span class="gradient-text">in mind?</span></h2>
+      <p class="section-sub">
+        I'm available for freelance projects and open to exciting full-time opportunities. Let's create something remarkable.
+      </p>
+      <div class="cta-actions">
+        <a href="{{ url_for('contact_page') }}" class="btn-primary">Start a Conversation &rarr;</a>
+        <a href="{{ url_for('resume') }}" class="btn-outline" target="_blank" rel="noopener">Download Resume ↗</a>
+      </div>
     </div>
+  </div>
 </section>
 
-<!-- ===== TYPING EFFECT ===== -->
+{% endblock %}
+
+{% block scripts %}
 <script>
-    (function () {
-        const phrases = [
-            '{{ profile.title if profile else "Full-Stack Developer" }}',
-            'Python & Flask Expert',
-            'UI/UX Enthusiast',
-            'Problem Solver'
-        ];
-        const el = document.getElementById('typing-text');
-        let pIdx = 0, cIdx = 0, deleting = false;
+(function () {
+  'use strict';
 
-        function tick() {
-            const phrase = phrases[pIdx];
-            if (!deleting) {
-                el.textContent = phrase.slice(0, ++cIdx);
-                if (cIdx === phrase.length) {
-                    deleting = true;
-                    setTimeout(tick, 2000);
-                    return;
-                }
-            } else {
-                el.textContent = phrase.slice(0, --cIdx);
-                if (cIdx === 0) {
-                    deleting = false;
-                    pIdx = (pIdx + 1) % phrases.length;
-                }
-            }
-            setTimeout(tick, deleting ? 50 : 90);
+  // ── Avatar fallback ───────────────────────────────────────
+  var avatarImg = document.getElementById('hero-avatar');
+  var avatarFallback = document.getElementById('hero-avatar-fallback');
+  if (avatarImg && avatarFallback) {
+    avatarImg.addEventListener('error', function () {
+      this.style.display = 'none';
+      avatarFallback.style.display = 'flex';
+    });
+  }
+
+  // ── Particle Canvas ───────────────────────────────────────
+  var canvas = document.getElementById('particle-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var particles = [];
+  var GOLD = 'rgba(245,158,11,';
+  var N = 55;
+  var CONNECT = 140;
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function Particle() {
+    this.x  = Math.random() * canvas.width;
+    this.y  = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 0.38;
+    this.vy = (Math.random() - 0.5) * 0.38;
+    this.r  = Math.random() * 1.4 + 0.5;
+    this.a  = Math.random() * 0.35 + 0.08;
+  }
+
+  Particle.prototype.update = function () {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > canvas.width)  this.vx *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+  };
+
+  Particle.prototype.draw = function () {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = GOLD + this.a + ')';
+    ctx.fill();
+  };
+
+  function init() {
+    particles = [];
+    for (var i = 0; i < N; i++) particles.push(new Particle());
+  }
+
+  function drawLines() {
+    for (var i = 0; i < particles.length; i++) {
+      for (var j = i + 1; j < particles.length; j++) {
+        var dx   = particles[i].x - particles[j].x;
+        var dy   = particles[i].y - particles[j].y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONNECT) {
+          var alpha = (1 - dist / CONNECT) * 0.14;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = GOLD + alpha + ')';
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
         }
-        tick();
-    })();
-</script>
+      }
+    }
+  }
 
+  function loop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(function (p) { p.update(); p.draw(); });
+    drawLines();
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  init();
+  loop();
+  window.addEventListener('resize', function () { resize(); init(); });
+
+  // ── Typewriter ────────────────────────────────────────────
+  var phrases = [
+    'Python Developer',
+    'Backend Developer',
+    'GenAI Python Developer',
+    'Software Engineer'
+  ];
+  var el  = document.getElementById('typewriter');
+  var pi  = 0, ci = 0, del = false;
+
+  function tick() {
+    if (!el) return;
+    var phrase = phrases[pi];
+    if (!del) {
+      el.textContent = phrase.slice(0, ++ci);
+      if (ci === phrase.length) {
+        del = true;
+        setTimeout(tick, 2200);
+        return;
+      }
+    } else {
+      el.textContent = phrase.slice(0, --ci);
+      if (ci === 0) {
+        del = false;
+        pi = (pi + 1) % phrases.length;
+      }
+    }
+    setTimeout(tick, del ? 45 : 85);
+  }
+  tick();
+
+  // ── GSAP Hero Entrance ────────────────────────────────────
+  if (typeof gsap !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from('.hero-label',     { opacity: 0, y: 20, duration: 0.6, delay: 0.6 });
+    gsap.from('.hero-name',      { opacity: 0, y: 30, duration: 0.7, delay: 0.75 });
+    gsap.from('.hero-role-wrap', { opacity: 0, y: 20, duration: 0.6, delay: 0.9 });
+    gsap.from('.hero-bio',       { opacity: 0, y: 20, duration: 0.6, delay: 1.05 });
+    gsap.from('.hero-actions',   { opacity: 0, y: 20, duration: 0.6, delay: 1.2 });
+    gsap.from('.hero-socials',   { opacity: 0, y: 20, duration: 0.6, delay: 1.35 });
+    gsap.from('.hero-visual',    { opacity: 0, x: 40, duration: 0.8, delay: 0.8 });
+    gsap.from('.stat-item',      { opacity: 0, y: 15, duration: 0.5, delay: 1.5, stagger: 0.1 });
+  }
+})();
+</script>
 {% endblock %}

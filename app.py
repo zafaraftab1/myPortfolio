@@ -316,7 +316,8 @@ def contact_page():
         flash("Thank you! Your message has been received. I'll get back to you soon.", "success")
         return redirect(url_for("contact_page"))
 
-    return render_template("contact.html")
+    profile = Profile.query.first()
+    return render_template("contact.html", profile=profile)
 
 
 def require_admin():

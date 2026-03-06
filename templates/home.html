@@ -18,7 +18,7 @@
       <div class="hero-label">Hello World</div>
 
       <h1 class="hero-name">
-        {{ profile.name if profile else 'Zafar Aftab' }}
+        {{ profile.name if profile else 'Md Aftab Alam' }}
       </h1>
 
       <div class="hero-role-wrap">
@@ -63,15 +63,16 @@
       <div class="avatar-wrap">
         <div class="avatar-glow"></div>
         <div class="avatar-ring-outer"></div>
+        <div class="avatar-ring-mid"></div>
         <div class="avatar-ring-dashed"></div>
         <img
           src="{{ url_for('static', filename='images/avatar.jpg') }}"
-          alt="{{ profile.name if profile else 'Zafar Aftab' }}"
+          alt="{{ profile.name if profile else 'Md Aftab Alam' }}"
           class="avatar-img"
           id="hero-avatar"
         >
         <div class="avatar-placeholder" id="hero-avatar-fallback" style="display:none;">
-          {{ (profile.name[:2].upper()) if profile else 'ZA' }}
+          {{ (profile.name[:2].upper()) if profile else 'MA' }}
         </div>
       </div>
     </div>

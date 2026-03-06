@@ -200,28 +200,72 @@
   inset: -18px;
   border: 1px solid var(--gold-dim);
   border-radius: 50%;
-  animation: orbit 22s linear infinite;
+  animation: orbit 18s linear infinite;
+}
+
+/* Two gold dots on the outer ring — 180° apart */
+.avatar-ring-outer::before,
+.avatar-ring-outer::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--gold), 0 0 24px rgba(245, 158, 11, 0.5);
+}
+.avatar-ring-outer::before {
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.avatar-ring-outer::after {
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Middle ring — smaller dot, counter-clockwise */
+.avatar-ring-mid {
+  position: absolute;
+  inset: -30px;
+  border: 1px solid rgba(245, 158, 11, 0.08);
+  border-radius: 50%;
+  animation: orbit 28s linear infinite reverse;
+}
+.avatar-ring-mid::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  width: 9px;
+  height: 9px;
+  background: var(--gold-bright);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--gold-bright), 0 0 20px rgba(251, 191, 36, 0.6);
+  transform: translateY(-50%);
 }
 
 .avatar-ring-dashed {
   position: absolute;
-  inset: -34px;
-  border: 1px dashed rgba(245, 158, 11, 0.10);
+  inset: -46px;
+  border: 1px dashed rgba(245, 158, 11, 0.12);
   border-radius: 50%;
-  animation: orbit 38s linear infinite reverse;
+  animation: orbit 42s linear infinite;
 }
-
-.avatar-ring-outer::after {
+/* Small accent dot on outer dashed ring */
+.avatar-ring-dashed::before {
   content: '';
   position: absolute;
-  top: 50%;
-  left: -4px;
-  width: 7px;
-  height: 7px;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
   background: var(--gold);
   border-radius: 50%;
-  box-shadow: 0 0 10px var(--gold);
-  transform: translateY(-50%);
+  box-shadow: 0 0 6px var(--gold);
+  opacity: 0.7;
 }
 
 @keyframes orbit {

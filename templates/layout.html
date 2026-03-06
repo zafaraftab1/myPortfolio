@@ -22,6 +22,9 @@
 </head>
 <body>
 
+<!-- ── Scroll Progress Bar ── -->
+<div id="scroll-progress"></div>
+
 <!-- ── Custom Cursor ── -->
 <div id="cursor-dot"></div>
 <div id="cursor-ring"></div>
@@ -32,7 +35,7 @@
 <!-- ===== NAVBAR ===== -->
 <nav id="navbar">
   <div class="nav-container">
-    <a href="{{ url_for('home') }}" class="nav-logo">ZA<span class="logo-accent">.</span></a>
+    <a href="{{ url_for('home') }}" class="nav-logo">AA<span class="logo-accent">.</span></a>
 
     <div class="nav-links-desktop">
       <a href="{{ url_for('home') }}"             class="{% if request.endpoint == 'home' %}active{% endif %}">Home</a>
@@ -99,8 +102,8 @@
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-brand">ZA<span class="logo-accent">.</span></div>
-    <p class="footer-copy">&copy; 2026 Zafar Aftab. All rights reserved.</p>
+    <div class="footer-brand">AA<span class="logo-accent">.</span></div>
+    <p class="footer-copy">&copy; 2026 Md Aftab Alam. All rights reserved.</p>
     <nav class="footer-links" aria-label="Footer">
       <a href="{{ url_for('home') }}">Home</a>
       <a href="{{ url_for('about') }}">About</a>
@@ -178,6 +181,34 @@
 
   document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function (el) {
     revealObs.observe(el);
+  });
+
+  // ── Scroll Progress Bar ──────────────────────────────────
+  var progressBar = document.getElementById('scroll-progress');
+  if (progressBar) {
+    window.addEventListener('scroll', function () {
+      var scrollTop = window.scrollY;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    }, { passive: true });
+  }
+
+  // ── 3D Card Tilt ─────────────────────────────────────────
+  document.querySelectorAll('.proj-card, .project-full-card, .glass-card').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var rect = card.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      var cx = rect.width / 2;
+      var cy = rect.height / 2;
+      var rotX = ((y - cy) / cy) * -8;
+      var rotY = ((x - cx) / cx) * 8;
+      card.style.transform = 'perspective(800px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateZ(6px)';
+    });
+    card.addEventListener('mouseleave', function () {
+      card.style.transform = '';
+    });
   });
 
   // ── Flash Dismiss ────────────────────────────────────────

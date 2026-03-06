@@ -193,6 +193,7 @@
   position: relative;
   width: 300px;
   height: 300px;
+  overflow: visible;
 }
 
 .avatar-ring-outer {

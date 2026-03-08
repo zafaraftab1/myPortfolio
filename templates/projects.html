@@ -36,6 +36,9 @@
           </div>
           <div class="proj-full-links">
             <a href="{{ url_for('project_detail', project_id=project.id) }}" class="proj-link-btn">Details</a>
+            <button class="arch-btn" data-project="{{ project.title }}">
+              <i class="fa-solid fa-network-wired"></i> Architecture
+            </button>
             {% if project.live_url %}
               <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="proj-link-btn proj-link-ghost">Live ↗</a>
             {% endif %}

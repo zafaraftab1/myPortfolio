@@ -37,6 +37,9 @@
                     {% if project.repo_url %}
                         <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn-secondary">View Code</a>
                     {% endif %}
+                    <button class="arch-btn" data-project="{{ project.title }}" style="margin-top:.5rem">
+                      <i class="fa-solid fa-network-wired"></i> View Architecture
+                    </button>
                 </div>
             </div>
         </div>

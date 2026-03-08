@@ -1,0 +1,360 @@
+/* ===================================================================
+   Interactive System Design Viewer — CSS
+   Cyber / Pitch-Black + Gold theme
+   =================================================================== */
+
+/* ── Modal overlay ─────────────────────────────────────────────── */
+.sysdesign-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+  backdrop-filter: blur(10px);
+}
+.sysdesign-modal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Modal inner container ─────────────────────────────────────── */
+.sysdesign-inner {
+  background: #060608;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1240px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 0 80px rgba(245, 158, 11, 0.12), 0 0 0 1px rgba(245, 158, 11, 0.08);
+  animation: sd-enter 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes sd-enter {
+  from { transform: scale(0.95) translateY(12px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+
+/* ── Header ────────────────────────────────────────────────────── */
+.sysdesign-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.1rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.15);
+  flex-shrink: 0;
+  background: rgba(245, 158, 11, 0.03);
+}
+.sysdesign-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: #f59e0b;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 0.2rem;
+}
+.sysdesign-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.03em;
+}
+.sysdesign-subdesc {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 0.25rem;
+  font-family: 'Inter', sans-serif;
+  max-width: 600px;
+}
+.sysdesign-close {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.6);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.15rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+.sysdesign-close:hover {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+/* ── Body layout ───────────────────────────────────────────────── */
+.sysdesign-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── SVG Canvas ────────────────────────────────────────────────── */
+.sysdesign-canvas-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(245, 158, 11, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 70%, rgba(167, 139, 250, 0.04) 0%, transparent 60%),
+    #050508;
+}
+.sysdesign-canvas-wrap.is-dragging { cursor: grabbing; }
+
+.sysdesign-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* ── SVG Node styles (applied via class on g elements) ─────────── */
+.sd-node rect {
+  transition: opacity 0.2s;
+}
+.sd-node.sd-node-dim rect,
+.sd-node.sd-node-dim text {
+  opacity: 0.18;
+}
+.sd-node-glow {
+  transition: opacity 0.25s;
+}
+
+/* ── SVG Edge styles ───────────────────────────────────────────── */
+@keyframes sd-flow {
+  to { stroke-dashoffset: -8; }
+}
+.sd-edge-path {
+  stroke-dasharray: 5 3;
+  animation: sd-flow 1.4s linear infinite;
+  transition: stroke 0.2s, opacity 0.2s;
+}
+.sd-edge-dim .sd-edge-path {
+  opacity: 0.08;
+  animation-play-state: paused;
+}
+.sd-edge-hi .sd-edge-path {
+  stroke-width: 2 !important;
+}
+
+/* ── Info Panel ────────────────────────────────────────────────── */
+.sysdesign-panel {
+  width: 268px;
+  flex-shrink: 0;
+  border-left: 1px solid rgba(245, 158, 11, 0.15);
+  padding: 1.4rem 1.2rem;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+}
+.sysdesign-panel-empty {
+  color: rgba(255, 255, 255, 0.22);
+  font-size: 0.82rem;
+  font-family: 'JetBrains Mono', monospace;
+  text-align: center;
+  line-height: 1.7;
+  margin-top: 3.5rem;
+}
+.sysdesign-panel-empty::before {
+  content: '{ }';
+  display: block;
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.35;
+}
+.sysdesign-panel-content { display: none; }
+.sysdesign-panel-content.sd-panel-visible { display: block; }
+
+.sd-panel-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 0.75rem;
+}
+.sd-panel-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+.sd-panel-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: #f59e0b;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.9rem;
+}
+.sd-panel-info {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.62);
+  line-height: 1.65;
+  font-family: 'Inter', sans-serif;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 0.9rem;
+}
+.sd-panel-conns {
+  margin-top: 1.1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+}
+.sd-panel-conns h4 {
+  color: rgba(255, 255, 255, 0.38);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+.sd-conn-item {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.4;
+}
+.sd-conn-item em {
+  font-style: normal;
+  color: rgba(245, 158, 11, 0.6);
+  margin-left: 0.3em;
+}
+
+/* ── Toolbar (zoom controls) ───────────────────────────────────── */
+.sysdesign-toolbar {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  display: flex;
+  gap: 0.4rem;
+  z-index: 10;
+}
+.sysdesign-toolbar button {
+  background: rgba(6, 6, 8, 0.9);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  color: #f59e0b;
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+}
+.sysdesign-toolbar button:hover {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: #f59e0b;
+}
+
+/* ── Hint label ────────────────────────────────────────────────── */
+.sd-canvas-hint {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* ── Legend ────────────────────────────────────────────────────── */
+.sysdesign-legend {
+  padding: 0.65rem 1.4rem;
+  border-top: 1px solid rgba(245, 158, 11, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.2rem;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+.sd-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.38rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.69rem;
+  color: rgba(255, 255, 255, 0.38);
+}
+.sd-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ── Architecture button on project cards ──────────────────────── */
+.arch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.48rem 1rem;
+  background: transparent;
+  border: 1px solid rgba(245, 158, 11, 0.38);
+  border-radius: 6px;
+  color: #f59e0b;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.22s;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.arch-btn i {
+  font-size: 0.8rem;
+}
+.arch-btn:hover {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: #f59e0b;
+  color: #fbbf24;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+}
+
+/* ── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .sysdesign-panel { width: 220px; }
+}
+@media (max-width: 768px) {
+  .sysdesign-panel { display: none; }
+  .sysdesign-modal { padding: 0.5rem; }
+  .sysdesign-inner { border-radius: 10px; max-height: 96vh; }
+}
+@media (max-width: 480px) {
+  .sysdesign-header { padding: 0.9rem 1rem; }
+  .sysdesign-title  { font-size: 0.9rem; }
+  .sysdesign-legend { display: none; }
+}

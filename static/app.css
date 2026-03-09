@@ -668,7 +668,7 @@ footer {
   transition: opacity 0.6s var(--ease);
 }
 
-[data-theme="light"] #star-canvas { opacity: 0; }
+[data-theme="light"] #star-canvas { opacity: 1; }
 
 /* ── LIGHT THEME ─────────────────────────────────────────────── */
 [data-theme="light"] {

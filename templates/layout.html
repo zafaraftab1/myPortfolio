@@ -304,17 +304,13 @@
       ctx.fill();
     }
 
-    function draw() {
-      var theme = document.documentElement.getAttribute('data-theme') || 'dark';
-      ctx.clearRect(0, 0, W, H);
-      if (theme !== 'dark') { requestAnimationFrame(draw); return; }
+    // ── Light theme: particle mesh ────────────────────────────
+    function drawLightTheme(t) {
+      var CONNECT = 130; // max distance for connecting lines
 
-      var t = Date.now() * 0.001;
-
+      // Physics + draw dots
       for (var i = 0; i < stars.length; i++) {
         var s = stars[i];
-
-        // ── Physics ──────────────────────────────────────────
         var dx   = mouseX - s.x;
         var dy   = mouseY - s.y;
         var dist = Math.sqrt(dx * dx + dy * dy) || 1;
@@ -324,7 +320,6 @@
           s.vx += (dx / dist) * pull;
           s.vy += (dy / dist) * pull;
         }
-
         s.vx += (s.ox - s.x) * SPRING;
         s.vy += (s.oy - s.y) * SPRING;
         s.vx *= DAMPING;
@@ -332,13 +327,73 @@
         s.x  += s.vx;
         s.y  += s.vy;
 
-        // ── Alpha ─────────────────────────────────────────────
+        var proximity = dist < ATTRACT_RADIUS ? (1 - dist / ATTRACT_RADIUS) : 0;
+        var pulse     = 0.25 + 0.75 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+        var alpha     = Math.min(0.75, (0.12 + pulse * 0.25) + proximity * 0.5);
+        var r         = (s.r * 0.9) + proximity * s.r * 1.6;
+
+        // dot — soft indigo/blue
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = s.gold
+          ? 'rgba(217,119,6,' + alpha.toFixed(2) + ')'      // amber for gold dots
+          : 'rgba(59,130,246,' + alpha.toFixed(2) + ')';    // blue for normal
+        ctx.fill();
+      }
+
+      // Draw connecting lines between close particles
+      for (var a = 0; a < stars.length; a++) {
+        for (var b = a + 1; b < stars.length; b++) {
+          var ddx  = stars[a].x - stars[b].x;
+          var ddy  = stars[a].y - stars[b].y;
+          var ddist = Math.sqrt(ddx * ddx + ddy * ddy);
+          if (ddist < CONNECT) {
+            var lineAlpha = (1 - ddist / CONNECT) * 0.18;
+            ctx.beginPath();
+            ctx.moveTo(stars[a].x, stars[a].y);
+            ctx.lineTo(stars[b].x, stars[b].y);
+            ctx.strokeStyle = 'rgba(99,102,241,' + lineAlpha.toFixed(2) + ')';
+            ctx.lineWidth = 0.7;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function draw() {
+      var theme = document.documentElement.getAttribute('data-theme') || 'dark';
+      ctx.clearRect(0, 0, W, H);
+      var t = Date.now() * 0.001;
+
+      if (theme === 'light') {
+        drawLightTheme(t);
+        requestAnimationFrame(draw);
+        return;
+      }
+
+      // ── Dark theme: 4-pointed stars ───────────────────────
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        var dx   = mouseX - s.x;
+        var dy   = mouseY - s.y;
+        var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+        if (dist < ATTRACT_RADIUS) {
+          var pull = (1 - dist / ATTRACT_RADIUS) * ATTRACT_STRENGTH * dist;
+          s.vx += (dx / dist) * pull;
+          s.vy += (dy / dist) * pull;
+        }
+        s.vx += (s.ox - s.x) * SPRING;
+        s.vy += (s.oy - s.y) * SPRING;
+        s.vx *= DAMPING;
+        s.vy *= DAMPING;
+        s.x  += s.vx;
+        s.y  += s.vy;
+
         var proximity = dist < ATTRACT_RADIUS ? (1 - dist / ATTRACT_RADIUS) : 0;
         var twinkle   = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
         var alpha     = Math.min(1, twinkle + proximity * 0.5);
-
-        // ── Draw 4-pointed star ───────────────────────────────
-        var outerR = s.r + proximity * s.r * 2.2;
+        var outerR    = s.r + proximity * s.r * 2.2;
         drawStar4(s.x, s.y, outerR, alpha, s.gold);
       }
       requestAnimationFrame(draw);

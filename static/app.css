@@ -504,6 +504,8 @@ footer {
   color: var(--text-2);
   max-width: 540px;
   line-height: 1.75;
+  margin: 0 auto;
+  text-align: center;
 }
 
 /* ── Gradient Text ──────────────────────────────────────────── */

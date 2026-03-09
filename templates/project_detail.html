@@ -1,54 +1,68 @@
 {% extends "layout.html" %}
 
-{% block title %}{{ project.title }}{% endblock %}
+{% block title %}{{ project.title }} — Md Aftab Alam{% endblock %}
 
 {% block content %}
-
 <section id="project-detail">
-    <a href="{{ url_for('projects_page') }}" class="back-btn">&larr; Back to Projects</a>
 
-    <div class="proj-detail-hero">
-        {% if project.image_url %}
-            <img src="{{ project.image_url }}" alt="{{ project.title }}">
-        {% else %}
-            <div class="proj-detail-hero-placeholder">{{ project.title }}</div>
-        {% endif %}
+  <!-- Back -->
+  <a href="{{ url_for('projects_page') }}" class="proj-back-btn">← Back to Projects</a>
+
+  <!-- Hero Image -->
+  <div class="proj-detail-hero {% if not project.image_url %}proj-detail-hero--no-img{% endif %}">
+    {% if project.image_url %}
+      <img src="{{ project.image_url }}" alt="{{ project.title }}" class="proj-detail-hero-img">
+    {% endif %}
+    <div class="proj-detail-hero-overlay">
+      <span class="section-eyebrow">Project</span>
+      <h1 class="proj-detail-hero-title gradient-text">{{ project.title }}</h1>
     </div>
+  </div>
 
-    <div class="proj-detail-content glass-card reveal">
-        <h1 class="proj-detail-title gradient-text">{{ project.title }}</h1>
+  <!-- Two-column body -->
+  <div class="proj-detail-body">
+
+    <!-- Left: description + CTA -->
+    <div class="proj-detail-main">
+      <div class="glass-card proj-detail-desc-card reveal">
+        <span class="proj-meta-label">Overview</span>
         <p class="proj-detail-desc">{{ project.description }}</p>
+      </div>
 
-        <div class="proj-detail-meta">
-            <div>
-                <span class="meta-label">Technology Stack</span>
-                <div class="proj-detail-stack">
-                    {% for tech in project.tech_stack.split(', ') %}
-                        <span class="proj-detail-badge">{{ tech }}</span>
-                    {% endfor %}
-                </div>
-            </div>
-            <div>
-                <span class="meta-label">Project Links</span>
-                <div class="proj-detail-links">
-                    {% if project.live_url %}
-                        <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn-primary">Live Project ↗</a>
-                    {% endif %}
-                    {% if project.repo_url %}
-                        <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn-secondary">View Code</a>
-                    {% endif %}
-                    <button class="arch-btn" data-project="{{ project.title }}" style="margin-top:.5rem">
-                      <i class="fa-solid fa-network-wired"></i> View Architecture
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="proj-detail-cta">
-            <p>Like what you see? Let's build something together.</p>
-            <a href="{{ url_for('contact_page') }}" class="btn-primary">Get In Touch &rarr;</a>
-        </div>
+      <div class="proj-detail-cta glass-card reveal">
+        <p class="proj-detail-cta-text">Like what you see? Let's build something together.</p>
+        <a href="{{ url_for('contact_page') }}" class="btn-primary">Get In Touch &rarr;</a>
+      </div>
     </div>
-</section>
 
+    <!-- Right: meta sidebar -->
+    <aside class="proj-detail-meta">
+      <div class="proj-meta-card reveal">
+        <span class="proj-meta-label">Technology Stack</span>
+        <div class="proj-meta-stack">
+          {% for tech in project.tech_stack.split(', ') %}
+            <span class="proj-tech-badge">{{ tech }}</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="proj-meta-card reveal">
+        <span class="proj-meta-label">Project Links</span>
+        <div class="proj-detail-links">
+          {% if project.live_url %}
+            <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn-primary">Live Project ↗</a>
+          {% endif %}
+          {% if project.repo_url %}
+            <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn-secondary">View Code</a>
+          {% endif %}
+          <button class="arch-btn" data-project="{{ project.title }}">
+            <i class="fa-solid fa-network-wired"></i> View Architecture
+          </button>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+</section>
 {% endblock %}

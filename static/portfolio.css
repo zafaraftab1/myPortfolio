@@ -1455,6 +1455,117 @@
   font-weight: 500;
 }
 
+/* ── EDUCATION ── */
+#education-section {
+  padding: 0 24px var(--section-pad);
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.timeline-dot--gold {
+  background: var(--gold) !important;
+  box-shadow: 0 0 12px rgba(245,158,11,0.6) !important;
+}
+
+/* ── CERTIFICATIONS ── */
+#certifications-section {
+  padding: 0 24px var(--section-pad);
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  gap: 24px;
+}
+
+.cert-card {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  padding: 28px 32px;
+}
+
+.cert-badge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.cert-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(245,158,11,0.18) 0%, rgba(245,158,11,0.06) 100%);
+  border: 1px solid var(--gold-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: var(--gold);
+}
+
+.cert-valid {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.cert-body { flex: 1; }
+
+.cert-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.cert-issuer {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+}
+
+.cert-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cert-points li {
+  font-size: 0.88rem;
+  color: var(--text-2);
+  line-height: 1.6;
+  padding-left: 16px;
+  position: relative;
+}
+
+.cert-points li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 0.7rem;
+  top: 2px;
+}
+
+@media (max-width: 768px) {
+  .cert-grid { grid-template-columns: 1fr; }
+  .cert-card { flex-direction: column; gap: 20px; }
+  .cert-badge-wrap { flex-direction: row; }
+}
+
 /* ── EMPTY STATE ── */
 .empty-state {
   padding: 80px 24px;

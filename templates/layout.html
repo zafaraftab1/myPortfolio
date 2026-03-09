@@ -256,11 +256,10 @@
     var W, H;
     var mouseX = -9999, mouseY = -9999;
 
-    // Physics constants
-    var ATTRACT_RADIUS   = 200;   // px — influence zone
-    var ATTRACT_STRENGTH = 0.042; // pull force toward cursor
-    var SPRING           = 0.022; // pull back to origin
-    var DAMPING          = 0.78;  // velocity decay (lower = bouncier)
+    var ATTRACT_RADIUS   = 200;
+    var ATTRACT_STRENGTH = 0.042;
+    var SPRING           = 0.022;
+    var DAMPING          = 0.78;
 
     function resize() {
       W = canvas.width  = window.innerWidth;
@@ -269,92 +268,63 @@
 
     function initStars() {
       stars = [];
-      var count = Math.floor((W * H) / 7000); // fewer stars, less clutter
+      var count = Math.floor((W * H) / 7000);
       for (var i = 0; i < count; i++) {
-        var x = Math.random() * W;
-        var y = Math.random() * H;
-        stars.push({
-          ox: x, oy: y,
-          x:  x, y:  y,
-          vx: 0, vy: 0,
-          r:     Math.random() * 1.8 + 0.6,  // slightly bigger so star shape is visible
+        var x = Math.random() * W, y = Math.random() * H;
+        stars.push({ ox:x, oy:y, x:x, y:y, vx:0, vy:0,
+          r: Math.random() * 1.8 + 0.6,
           phase: Math.random() * Math.PI * 2,
           speed: Math.random() * 0.55 + 0.18,
-          gold:  Math.random() < 0.15
-        });
+          gold: Math.random() < 0.15 });
       }
     }
 
-    // Draw a 4-pointed star shape
+    // 4-pointed star shape
     function drawStar4(cx, cy, outerR, alpha, isGold) {
       var innerR = outerR * 0.38;
-      var color  = isGold
-        ? 'rgba(245,158,11,' + alpha.toFixed(2) + ')'
-        : 'rgba(255,255,255,' + alpha.toFixed(2) + ')';
       ctx.beginPath();
       for (var p = 0; p < 8; p++) {
         var angle = (p * Math.PI) / 4 - Math.PI / 4;
-        var r     = (p % 2 === 0) ? outerR : innerR;
-        var px    = cx + Math.cos(angle) * r;
-        var py    = cy + Math.sin(angle) * r;
+        var rr    = (p % 2 === 0) ? outerR : innerR;
+        var px    = cx + Math.cos(angle) * rr;
+        var py    = cy + Math.sin(angle) * rr;
         if (p === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
       }
       ctx.closePath();
-      ctx.fillStyle = color;
+      ctx.fillStyle = isGold ? 'rgba(245,158,11,'+alpha.toFixed(2)+')' : 'rgba(255,255,255,'+alpha.toFixed(2)+')';
       ctx.fill();
     }
 
     // ── Light theme: particle mesh ────────────────────────────
     function drawLightTheme(t) {
-      var CONNECT = 130; // max distance for connecting lines
-
-      // Physics + draw dots
+      var CONNECT = 130;
       for (var i = 0; i < stars.length; i++) {
         var s = stars[i];
-        var dx   = mouseX - s.x;
-        var dy   = mouseY - s.y;
-        var dist = Math.sqrt(dx * dx + dy * dy) || 1;
-
+        var dx = mouseX - s.x, dy = mouseY - s.y;
+        var dist = Math.sqrt(dx*dx + dy*dy) || 1;
         if (dist < ATTRACT_RADIUS) {
           var pull = (1 - dist / ATTRACT_RADIUS) * ATTRACT_STRENGTH * dist;
-          s.vx += (dx / dist) * pull;
-          s.vy += (dy / dist) * pull;
+          s.vx += (dx/dist)*pull; s.vy += (dy/dist)*pull;
         }
-        s.vx += (s.ox - s.x) * SPRING;
-        s.vy += (s.oy - s.y) * SPRING;
-        s.vx *= DAMPING;
-        s.vy *= DAMPING;
-        s.x  += s.vx;
-        s.y  += s.vy;
-
-        var proximity = dist < ATTRACT_RADIUS ? (1 - dist / ATTRACT_RADIUS) : 0;
-        var pulse     = 0.25 + 0.75 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
-        var alpha     = Math.min(0.75, (0.12 + pulse * 0.25) + proximity * 0.5);
-        var r         = (s.r * 0.9) + proximity * s.r * 1.6;
-
-        // dot — soft indigo/blue
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = s.gold
-          ? 'rgba(217,119,6,' + alpha.toFixed(2) + ')'      // amber for gold dots
-          : 'rgba(59,130,246,' + alpha.toFixed(2) + ')';    // blue for normal
+        s.vx += (s.ox - s.x)*SPRING; s.vy += (s.oy - s.y)*SPRING;
+        s.vx *= DAMPING; s.vy *= DAMPING;
+        s.x  += s.vx;   s.y  += s.vy;
+        var proximity = dist < ATTRACT_RADIUS ? (1 - dist/ATTRACT_RADIUS) : 0;
+        var pulse = 0.25 + 0.75 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+        var alpha = Math.min(0.75, (0.12 + pulse*0.25) + proximity*0.5);
+        var r     = (s.r * 0.9) + proximity * s.r * 1.6;
+        ctx.beginPath(); ctx.arc(s.x, s.y, r, 0, Math.PI*2);
+        ctx.fillStyle = s.gold ? 'rgba(217,119,6,'+alpha.toFixed(2)+')' : 'rgba(59,130,246,'+alpha.toFixed(2)+')';
         ctx.fill();
       }
-
-      // Draw connecting lines between close particles
       for (var a = 0; a < stars.length; a++) {
-        for (var b = a + 1; b < stars.length; b++) {
-          var ddx  = stars[a].x - stars[b].x;
-          var ddy  = stars[a].y - stars[b].y;
-          var ddist = Math.sqrt(ddx * ddx + ddy * ddy);
-          if (ddist < CONNECT) {
-            var lineAlpha = (1 - ddist / CONNECT) * 0.18;
-            ctx.beginPath();
-            ctx.moveTo(stars[a].x, stars[a].y);
-            ctx.lineTo(stars[b].x, stars[b].y);
-            ctx.strokeStyle = 'rgba(99,102,241,' + lineAlpha.toFixed(2) + ')';
-            ctx.lineWidth = 0.7;
-            ctx.stroke();
+        for (var b = a+1; b < stars.length; b++) {
+          var ddx = stars[a].x - stars[b].x, ddy = stars[a].y - stars[b].y;
+          var dd  = Math.sqrt(ddx*ddx + ddy*ddy);
+          if (dd < CONNECT) {
+            ctx.beginPath(); ctx.moveTo(stars[a].x, stars[a].y); ctx.lineTo(stars[b].x, stars[b].y);
+            ctx.strokeStyle = 'rgba(99,102,241,' + ((1-dd/CONNECT)*0.18).toFixed(2) + ')';
+            ctx.lineWidth = 0.7; ctx.stroke();
           }
         }
       }
@@ -365,37 +335,26 @@
       ctx.clearRect(0, 0, W, H);
       var t = Date.now() * 0.001;
 
-      if (theme === 'light') {
-        drawLightTheme(t);
-        requestAnimationFrame(draw);
-        return;
-      }
+      if (theme === 'light') { drawLightTheme(t); requestAnimationFrame(draw); return; }
 
-      // ── Dark theme: 4-pointed stars ───────────────────────
+      // ── Dark theme: stars + celestials ────────────────────
       for (var i = 0; i < stars.length; i++) {
         var s = stars[i];
-        var dx   = mouseX - s.x;
-        var dy   = mouseY - s.y;
-        var dist = Math.sqrt(dx * dx + dy * dy) || 1;
-
+        var dx = mouseX - s.x, dy = mouseY - s.y;
+        var dist = Math.sqrt(dx*dx + dy*dy) || 1;
         if (dist < ATTRACT_RADIUS) {
-          var pull = (1 - dist / ATTRACT_RADIUS) * ATTRACT_STRENGTH * dist;
-          s.vx += (dx / dist) * pull;
-          s.vy += (dy / dist) * pull;
+          var pull = (1 - dist/ATTRACT_RADIUS) * ATTRACT_STRENGTH * dist;
+          s.vx += (dx/dist)*pull; s.vy += (dy/dist)*pull;
         }
-        s.vx += (s.ox - s.x) * SPRING;
-        s.vy += (s.oy - s.y) * SPRING;
-        s.vx *= DAMPING;
-        s.vy *= DAMPING;
-        s.x  += s.vx;
-        s.y  += s.vy;
-
-        var proximity = dist < ATTRACT_RADIUS ? (1 - dist / ATTRACT_RADIUS) : 0;
+        s.vx += (s.ox - s.x)*SPRING; s.vy += (s.oy - s.y)*SPRING;
+        s.vx *= DAMPING; s.vy *= DAMPING;
+        s.x  += s.vx;   s.y  += s.vy;
+        var proximity = dist < ATTRACT_RADIUS ? (1 - dist/ATTRACT_RADIUS) : 0;
         var twinkle   = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
         var alpha     = Math.min(1, twinkle + proximity * 0.5);
-        var outerR    = s.r + proximity * s.r * 2.2;
-        drawStar4(s.x, s.y, outerR, alpha, s.gold);
+        drawStar4(s.x, s.y, s.r + proximity * s.r * 2.2, alpha, s.gold);
       }
+
       requestAnimationFrame(draw);
     }
 

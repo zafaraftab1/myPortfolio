@@ -118,17 +118,23 @@
     <div class="clients-track" id="clients-track">
 
       {% set clients = [
-        { 'name': 'Toyota',            'icon': 'fa-solid fa-car',           'tag': 'Automotive' },
-        { 'name': 'ABB',               'icon': 'fa-solid fa-bolt',          'tag': 'Automation' },
-        { 'name': 'Ivory.ai',          'icon': 'fa-solid fa-brain',         'tag': 'AI / SaaS' },
-        { 'name': 'Icon Construction', 'icon': 'fa-solid fa-helmet-safety', 'tag': 'Construction' },
-        { 'name': 'Falcon Systems',    'icon': 'fa-solid fa-rocket',        'tag': 'Tech' }
+        { 'name': 'Toyota',            'logo': 'https://logo.clearbit.com/toyota.com',            'initials': 'T',  'tag': 'Automotive' },
+        { 'name': 'ABB',               'logo': 'https://logo.clearbit.com/abb.com',               'initials': 'AB', 'tag': 'Automation' },
+        { 'name': 'Ivory.ai',          'logo': 'https://logo.clearbit.com/ivory.ai',              'initials': 'IV', 'tag': 'AI / SaaS' },
+        { 'name': 'Icon Construction', 'logo': 'https://logo.clearbit.com/iconconstruction.com',  'initials': 'IC', 'tag': 'Construction' },
+        { 'name': 'Falcon Systems',    'logo': 'https://logo.clearbit.com/falconsystems.com',     'initials': 'FS', 'tag': 'Tech' }
       ] %}
 
       {% for c in clients %}
       <div class="client-card glass-card">
-        <div class="client-icon-box">
-          <i class="{{ c.icon }}"></i>
+        <div class="client-logo-wrap">
+          <img
+            src="{{ c.logo }}"
+            alt="{{ c.name }} logo"
+            class="client-logo-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          >
+          <div class="client-logo-fallback" style="display:none;">{{ c.initials }}</div>
         </div>
         <div class="client-info">
           <span class="client-name">{{ c.name }}</span>
@@ -140,8 +146,14 @@
       <!-- Duplicate for seamless loop -->
       {% for c in clients %}
       <div class="client-card glass-card">
-        <div class="client-icon-box">
-          <i class="{{ c.icon }}"></i>
+        <div class="client-logo-wrap">
+          <img
+            src="{{ c.logo }}"
+            alt="{{ c.name }} logo"
+            class="client-logo-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          >
+          <div class="client-logo-fallback" style="display:none;">{{ c.initials }}</div>
         </div>
         <div class="client-info">
           <span class="client-name">{{ c.name }}</span>

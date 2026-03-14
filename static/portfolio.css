@@ -486,24 +486,41 @@
   box-shadow: 0 0 24px rgba(245,158,11,0.18);
 }
 
-.client-icon-box {
-  width: 48px;
-  height: 48px;
+.client-logo-wrap {
+  width: 52px;
+  height: 52px;
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05));
-  border: 1px solid rgba(245,158,11,0.25);
+  background: #fff;
+  border: 1px solid rgba(245,158,11,0.20);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 1.25rem;
-  color: var(--gold);
-  transition: background var(--t-fast), box-shadow var(--t-fast);
+  overflow: hidden;
+  transition: box-shadow var(--t-fast);
 }
 
-.client-card:hover .client-icon-box {
-  background: linear-gradient(135deg, rgba(245,158,11,0.28), rgba(245,158,11,0.10));
-  box-shadow: 0 0 12px rgba(245,158,11,0.22);
+.client-card:hover .client-logo-wrap {
+  box-shadow: 0 0 14px rgba(245,158,11,0.25);
+}
+
+.client-logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  display: block;
+}
+
+.client-logo-fallback {
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-head);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.04em;
 }
 
 .client-info {

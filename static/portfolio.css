@@ -17,7 +17,8 @@
 #particle-canvas {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 4;
+  pointer-events: none;
 }
 
 /* Dot-grid overlay */
@@ -433,6 +434,100 @@
   border-radius: 50%;
   opacity: 0.4;
   flex-shrink: 0;
+}
+
+/* ── HOME: CLIENTS ── */
+#clients-section {
+  padding: 80px 0 var(--section-pad);
+}
+
+.clients-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.clients-marquee-wrap {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.clients-track {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  width: max-content;
+  animation: clients-scroll 30s linear infinite;
+  padding: 8px 0 16px;
+}
+
+.clients-track:hover { animation-play-state: paused; }
+
+@keyframes clients-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.client-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 28px;
+  min-width: 220px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  transition: border-color var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+  cursor: default;
+}
+
+.client-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 0 24px rgba(245,158,11,0.18);
+}
+
+.client-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05));
+  border: 1px solid rgba(245,158,11,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  color: var(--gold);
+  transition: background var(--t-fast), box-shadow var(--t-fast);
+}
+
+.client-card:hover .client-icon-box {
+  background: linear-gradient(135deg, rgba(245,158,11,0.28), rgba(245,158,11,0.10));
+  box-shadow: 0 0 12px rgba(245,158,11,0.22);
+}
+
+.client-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.client-name {
+  font-family: var(--font-head);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.client-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
 }
 
 /* ── HOME: FEATURED PROJECTS ── */

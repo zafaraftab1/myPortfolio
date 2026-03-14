@@ -246,6 +246,8 @@
   var GOLD = 'rgba(245,158,11,';
   var N = 55;
   var CONNECT = 140;
+  // Particles only appear on the left 58% (text side) — keeps avatar face clean
+  function particleZone() { return canvas.width * 0.58; }
 
   function resize() {
     canvas.width  = window.innerWidth;
@@ -253,7 +255,8 @@
   }
 
   function Particle() {
-    this.x  = Math.random() * canvas.width;
+    var zone = particleZone();
+    this.x  = Math.random() * zone;
     this.y  = Math.random() * canvas.height;
     this.vx = (Math.random() - 0.5) * 0.38;
     this.vy = (Math.random() - 0.5) * 0.38;
@@ -264,7 +267,8 @@
   Particle.prototype.update = function () {
     this.x += this.vx;
     this.y += this.vy;
-    if (this.x < 0 || this.x > canvas.width)  this.vx *= -1;
+    var zone = particleZone();
+    if (this.x < 0 || this.x > zone) this.vx *= -1;
     if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
   };
 
@@ -354,6 +358,21 @@
     gsap.from('.hero-socials',   { opacity: 0, y: 20, duration: 0.6, delay: 1.35 });
     gsap.from('.hero-visual',    { opacity: 0, x: 40, duration: 0.8, delay: 0.8 });
     gsap.from('.stat-item',      { opacity: 0, y: 15, duration: 0.5, delay: 1.5, stagger: 0.1 });
+  }
+
+  // ── Hide custom cursor over avatar ────────────────────────
+  var avatarArea = document.querySelector('.avatar-wrap');
+  var cursorDot  = document.getElementById('cursor-dot');
+  var cursorRing = document.getElementById('cursor-ring');
+  if (avatarArea && cursorDot && cursorRing) {
+    avatarArea.addEventListener('mouseenter', function () {
+      cursorDot.style.opacity  = '0';
+      cursorRing.style.opacity = '0';
+    });
+    avatarArea.addEventListener('mouseleave', function () {
+      cursorDot.style.opacity  = '';
+      cursorRing.style.opacity = '';
+    });
   }
 })();
 </script>

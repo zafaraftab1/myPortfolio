@@ -17,7 +17,7 @@
 #particle-canvas {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -487,26 +487,27 @@
 }
 
 .client-logo-wrap {
-  width: 52px;
-  height: 52px;
-  border-radius: 12px;
-  background: #fff;
-  border: 1px solid rgba(245,158,11,0.20);
+  width: 80px;
+  height: 48px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(245,158,11,0.18);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   overflow: hidden;
-  transition: box-shadow var(--t-fast);
+  transition: box-shadow var(--t-fast), background var(--t-fast);
 }
 
 .client-card:hover .client-logo-wrap {
-  box-shadow: 0 0 14px rgba(245,158,11,0.25);
+  background: rgba(255,255,255,0.10);
+  box-shadow: 0 0 14px rgba(245,158,11,0.22);
 }
 
 .client-logo-img {
-  width: 36px;
-  height: 36px;
+  width: 72px;
+  height: 40px;
   object-fit: contain;
   display: block;
 }

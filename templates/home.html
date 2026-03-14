@@ -107,6 +107,53 @@
   </div>
 </section>
 
+<!-- ===== CLIENTS ===== -->
+<section id="clients-section">
+  <div class="section-wrap clients-header reveal">
+    <span class="section-eyebrow">Trusted By</span>
+    <h2 class="section-title">Companies I've <span class="gradient-text">Worked With</span></h2>
+  </div>
+
+  <div class="clients-marquee-wrap">
+    <div class="clients-track" id="clients-track">
+
+      {% set clients = [
+        { 'name': 'Toyota',            'icon': 'fa-solid fa-car',           'tag': 'Automotive' },
+        { 'name': 'ABB',               'icon': 'fa-solid fa-bolt',          'tag': 'Automation' },
+        { 'name': 'Ivory.ai',          'icon': 'fa-solid fa-brain',         'tag': 'AI / SaaS' },
+        { 'name': 'Icon Construction', 'icon': 'fa-solid fa-helmet-safety', 'tag': 'Construction' },
+        { 'name': 'Falcon Systems',    'icon': 'fa-solid fa-rocket',        'tag': 'Tech' }
+      ] %}
+
+      {% for c in clients %}
+      <div class="client-card glass-card">
+        <div class="client-icon-box">
+          <i class="{{ c.icon }}"></i>
+        </div>
+        <div class="client-info">
+          <span class="client-name">{{ c.name }}</span>
+          <span class="client-tag">{{ c.tag }}</span>
+        </div>
+      </div>
+      {% endfor %}
+
+      <!-- Duplicate for seamless loop -->
+      {% for c in clients %}
+      <div class="client-card glass-card">
+        <div class="client-icon-box">
+          <i class="{{ c.icon }}"></i>
+        </div>
+        <div class="client-info">
+          <span class="client-name">{{ c.name }}</span>
+          <span class="client-tag">{{ c.tag }}</span>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
 <!-- ===== FEATURED PROJECTS ===== -->
 {% if projects %}
 <section id="featured-projects">
